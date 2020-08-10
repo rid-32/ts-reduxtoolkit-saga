@@ -3,18 +3,18 @@ import React, { useEffect } from 'react';
 import { ordersSelectors, ordersActions } from 'core/sellers';
 
 const Orders: React.FC = () => {
-  const isFetching = ordersSelectors.useIsFetching();
-  const fetch = ordersActions.useFetch();
+  const areOrdersFetching = ordersSelectors.useIsFetching();
+  const fetchOrders = ordersActions.useFetch();
 
   useEffect(() => {
-    fetch(undefined, {
+    fetchOrders(undefined, {
       handleSuccess: async ({ data }, dispatch) => {
         return data;
       },
     });
   }, []);
 
-  if (isFetching) {
+  if (areOrdersFetching) {
     return <h3>Loading...</h3>;
   }
 
