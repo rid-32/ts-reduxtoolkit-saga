@@ -1,19 +1,7 @@
-import { createAsyncThunk, ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { getFetchDomain } from './consts';
-
-type FetchArgRequired<A, R, P> = Core.FetchConfigRequired<
-  A,
-  R,
-  P,
-  ThunkDispatch<unknown, unknown, AnyAction>
->;
-
-type FetchArgOptional<A, P> = Core.FetchConfigOptional<
-  A,
-  P,
-  ThunkDispatch<unknown, unknown, AnyAction>
->;
+import { FetchArgOptional, FetchArgRequired } from './types';
 
 export const getFetchThunkWithOptionalHandler = <A, P>({
   domain,

@@ -1,25 +1,11 @@
 import {
   SliceCaseReducers,
   ActionReducerMapBuilder,
-  AsyncThunk,
   Draft,
-  ThunkDispatch,
-  AnyAction,
 } from '@reduxjs/toolkit';
 
 import * as CONSTS from './consts';
-
-type FetchOptional<A, P> = AsyncThunk<
-  P,
-  Core.FetchConfigOptional<A, P, ThunkDispatch<unknown, unknown, AnyAction>>,
-  {}
->;
-
-type FetchRequired<A, R, P> = AsyncThunk<
-  P,
-  Core.FetchConfigRequired<A, R, P, ThunkDispatch<unknown, unknown, AnyAction>>,
-  {}
->;
+import { FetchOptional, FetchRequired } from './types';
 
 export const getFetchExtraReducersOptional = <A, P>(
   fetch: FetchOptional<A, P>,

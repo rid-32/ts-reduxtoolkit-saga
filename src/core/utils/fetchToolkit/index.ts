@@ -1,4 +1,4 @@
-import { createSlice, ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 import { getInitialFetchState } from './consts';
@@ -12,17 +12,7 @@ import {
   getFetchThunkWithOptionalHandler,
   getFetchThunkWithRequiredHandler,
 } from './actions';
-
-type FetchHandlersOptional<A> = Core.FetchHandlersOptional<
-  A,
-  ThunkDispatch<unknown, unknown, AnyAction>
->;
-
-type FetchHandlersRequired<A, R> = Core.FetchHandlersRequired<
-  A,
-  R,
-  ThunkDispatch<unknown, unknown, AnyAction>
->;
+import { FetchHandlersOptional, FetchHandlersRequired } from './types';
 
 export const createFetchSlice = <P, A = void>(
   config: Core.FetchSliceConfig<A, P>,
