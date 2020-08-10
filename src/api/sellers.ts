@@ -14,8 +14,9 @@ const orders = [
 ];
 
 export const fetchOrders = (): Promise<Order.Table> =>
-  new Promise((res): void => {
+  new Promise((res, rej): void => {
     setTimeout((): void => {
       res({ data: orders, total: orders.length });
+      // rej(new Error('Some json'));
     }, 2000);
   });

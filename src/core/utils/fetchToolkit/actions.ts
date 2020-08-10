@@ -19,13 +19,11 @@ export const getFetchThunkWithOptionalHandler = <A, P>({
           await handleSuccess(response, dispatch, getState);
         }
       } catch (error) {
-        let response: object;
-
         if (handleError) {
-          response = await handleError(error, dispatch, getState);
+          await handleError(error, dispatch, getState);
         }
 
-        throw response;
+        throw error;
       }
 
       return response;
@@ -45,13 +43,11 @@ export const getFetchThunkWithRequiredHandler = <A, R, P>({
         const apiResponse = await apiMethod(payload);
         response = await handleSuccess(apiResponse, dispatch, getState);
       } catch (error) {
-        let response: object;
-
         if (handleError) {
-          response = await handleError(error, dispatch, getState);
+          await handleError(error, dispatch, getState);
         }
 
-        throw response;
+        throw error;
       }
 
       return response;

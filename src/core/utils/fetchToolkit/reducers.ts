@@ -23,7 +23,7 @@ export const getFetchExtraReducersOptional = <A, P>(
   builder.addCase(fetch.rejected, (state, action): void => {
     state.isFetching = false;
     state.isFetched = true;
-    state.error = action.payload as object;
+    state.error = action.error;
   });
 };
 
@@ -43,7 +43,7 @@ export const getFetchExtraReducersRequired = <A, R, P>(
   builder.addCase(fetch.rejected, (state, action): void => {
     state.isFetching = false;
     state.isFetched = true;
-    state.error = action.payload as object;
+    state.error = action.error;
   });
 };
 

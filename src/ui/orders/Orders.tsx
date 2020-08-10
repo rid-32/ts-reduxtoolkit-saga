@@ -8,8 +8,11 @@ const Orders: React.FC = () => {
 
   useEffect(() => {
     fetchOrders(undefined, {
-      handleSuccess: async ({ data }, dispatch) => {
+      handleSuccess: async ({ data }) => {
         return data;
+      },
+      handleError: async error => {
+        throw new Error(`Origin error: ${error.message}`);
       },
     });
   }, []);

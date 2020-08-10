@@ -12,11 +12,7 @@ declare namespace Core {
   };
 
   type ErrorHandler<D> = {
-    handleError?: (
-      arg: object,
-      dispatch: D,
-      getState: unknown,
-    ) => Promise<object>;
+    handleError?: (arg: Error, dispatch: D, getState: unknown) => Promise<void>;
   };
 
   type FetchHandlersRequired<R, P, D> = {
