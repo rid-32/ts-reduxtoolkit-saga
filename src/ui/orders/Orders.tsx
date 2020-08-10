@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { ordersSelectors, ordersActions } from 'core/sellers';
 
 const Orders: React.FC = () => {
-  const isFetching = !ordersSelectors.useIsFetched();
+  const isFetching = ordersSelectors.useIsFetching();
   const fetch = ordersActions.useFetch();
 
   useEffect(() => {

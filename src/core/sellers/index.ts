@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { createFetchHandleSlice } from 'core/utils/fetchToolkit';
+import { createFetchHandlingSlice } from 'core/utils/fetchToolkit';
 import * as CONSTS from './consts';
 import { fetchOrders } from 'api/sellers';
 
@@ -8,7 +8,7 @@ const {
   reducer: ordersReducer,
   selectors: ordersSelectors,
   actions: ordersActions,
-} = createFetchHandleSlice<Order.Element[], Order.Table>({
+} = createFetchHandlingSlice<Order.Element[], Order.Table>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
 });

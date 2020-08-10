@@ -60,7 +60,7 @@ export const createFetchSlice = <P, A = void>(
   };
 };
 
-export const createFetchHandleSlice = <P, R, A = void>(
+export const createFetchHandlingSlice = <P, R, A = void>(
   config: Core.FetchSliceConfig<A, R>,
 ) => {
   const fetchThunk = getFetchThunkWithRequiredHandler<A, R, P>(config);

@@ -2,12 +2,15 @@ import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
 
-const getIsFetchingSelector = (domain: string) => (state): boolean => {
-  return get(state, domain, {}).isFetching;
-};
-
 const getIsFetchedSelector = (domain: string) => (state): boolean => {
   return get(state, domain, {}).isFetched;
+};
+
+const getIsFetchingSelector = (domain: string) => (state): boolean => {
+  const isFetching = get(state, domain, {}).isFetching;
+  const isFetched = getIsFetchedSelector(domain)(state);
+
+  return isFetching || !isFetched;
 };
 
 const getPayloadSelector = <P>(domain: string, defaultValue: P = null) => (
