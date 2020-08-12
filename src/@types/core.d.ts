@@ -1,31 +1,4 @@
 declare namespace Core {
-  type FetchState<P> = {
-    isFetching: boolean;
-    isFetched: boolean;
-    payload: P;
-    error: object;
-  };
-
-  type ErrorHandler<D> = {
-    handleError?: (arg: Error, dispatch: D, getState: unknown) => Promise<void>;
-  };
-
-  type FetchHandlersRequired<R, P, D> = {
-    handleSuccess: (arg: R, dispatch: D, getState: unknown) => Promise<P>;
-  } & ErrorHandler<D>;
-
-  type FetchHandlersOptional<P, D> = {
-    handleSuccess?: (arg: P, dispatch: D, getState: unknown) => Promise<void>;
-  } & ErrorHandler<D>;
-
-  type FetchConfigRequired<A, R, P, D> = {
-    payload?: A;
-  } & FetchHandlersRequired<R, P, D>;
-
-  type FetchConfigOptional<A, P, D> = {
-    payload?: A;
-  } & FetchHandlersOptional<P, D>;
-
   // type FetchReturnData<P> = { data: P };
   // type FetchReturnType<P> = Iterator<any, P> | Promise<P>;
   //

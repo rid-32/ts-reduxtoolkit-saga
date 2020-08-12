@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { createFetchSlice } from 'core/utils/fetchToolkit';
+import { createFetchSlice } from 'core/utils/fetch';
 import * as CONSTS from './consts';
 import { fetchOrders } from 'api/sellers';
 
@@ -11,7 +11,9 @@ const {
 } = createFetchSlice<Order.Element[], void, Order.Table>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
-  onFulfilled: async ({ data, total }) => {
+  onFulfilled: async ({ apiResponse }) => {
+    const { data, total } = apiResponse;
+
     console.log({ total });
 
     return data;

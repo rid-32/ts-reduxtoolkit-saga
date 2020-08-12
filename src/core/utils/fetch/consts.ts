@@ -1,13 +1,12 @@
-// const FETCH_PREFIX = 'fetch';
-//
-// export const STARTED = `${FETCH_PREFIX}@STARTED`;
-// export const SUCCESS = `${FETCH_PREFIX}@SUCCESS`;
-// export const FAILURE = `${FETCH_PREFIX}@FAILURE`;
-// export const CLEAR = `${FETCH_PREFIX}@CLEAR`;
-//
-// export const INITIAL_FETCH_STATE: Core.FetchState<null> = {
-//   isFetching: false,
-//   isFetched: false,
-//   payload: null,
-//   error: null,
-// };
+import { FetchState } from './types';
+
+export const INITIAL_FETCH_STATE: FetchState<null> = {
+  isFetching: false,
+  isFetched: false,
+  payload: null,
+  error: null,
+};
+
+export const getInitialFetchState = <P>(): FetchState<P> => INITIAL_FETCH_STATE;
+
+export const getFetchDomain = (domain: string): string => `${domain}/fetch`;

@@ -1,11 +1,47 @@
-// import * as CONSTS from './consts';
-// import { createNamedAction } from '../tools';
-//
-// export const getFetchActions = <P>(
-//   name: string,
-// ): Core.FetchActionsReturnType<P> => ({
-//   started: createNamedAction(CONSTS.STARTED, name),
-//   success: createNamedAction<P>(CONSTS.SUCCESS, name),
-//   failure: createNamedAction<string>(CONSTS.FAILURE, name),
-//   clear: createNamedAction(CONSTS.CLEAR, name),
-// });
+import { createAsyncThunk, AsyncThunk } from '@reduxjs/toolkit';
+
+import { getFetchDomain } from './consts';
+import { SliceOptionalConfig, SliceRequiredConfig } from './types';
+
+function getFetchThunk<P, A>(
+  config: SliceOptionalConfig<P, A>,
+): AsyncThunk<P, A, {}>;
+function getFetchThunk<P, A, R>(
+  config: SliceRequiredConfig<P, A, R>,
+): AsyncThunk<P, A, {}>;
+function getFetchThunk<P, A>({ domain, apiMethod, onFulfilled, onRejected }) {
+  return createAsyncThunk<P, A>(
+    getFetchDomain(domain),
+    async (payload, { dispatch, getState }) => {
+      try {
+        const apiResponse = await apiMethod(payload);
+
+        if (onFulfilled) {
+          const handlerResponse = await onFulfilled({
+            apiArg: payload,
+            apiResponse,
+            dispatch,
+            getState,
+          });
+
+          return handlerResponse || apiResponse;
+        }
+
+        return apiResponse;
+      } catch (error) {
+        if (onRejected) {
+          await onRejected({
+            apiArg: payload,
+            apiError: error,
+            dispatch,
+            getState,
+          });
+        }
+
+        throw error;
+      }
+    },
+  );
+}
+
+export { getFetchThunk };

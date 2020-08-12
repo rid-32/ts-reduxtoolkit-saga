@@ -1,33 +1,44 @@
-// import { createDomainSelector } from '../tools';
-//
-// export const getIsFetchingSelector = (domainPath: string) => (
-//   state: Store.State,
-// ): boolean => {
-//   const domain = createDomainSelector<Core.FetchState<any>>(domainPath)(state);
-//
-//   return domain.isFetching;
-// };
-//
-// export const getIsFetchedSelector = (domainPath: string) => (
-//   state: Store.State,
-// ): boolean => {
-//   const domain = createDomainSelector<Core.FetchState<any>>(domainPath)(state);
-//
-//   return domain.isFetched;
-// };
-//
-// export const getPayloadSelector = <P>(domainPath: string, defaultValue?: P) => (
-//   state: Store.State,
-// ): P => {
-//   const domain = createDomainSelector<Core.FetchState<P>>(domainPath)(state);
-//
-//   return domain.payload || defaultValue;
-// };
-//
-// export const getErrorSelector = (domainPath: string, defaultValue?: string) => (
-//   state: Store.State,
-// ): string => {
-//   const domain = createDomainSelector<Core.FetchState<any>>(domainPath)(state);
-//
-//   return domain.error || defaultValue;
-// };
+import { SerializedError } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+
+import { get } from 'utils/tools';
+import { State } from 'core/store';
+
+const getIsFetchedSelector = (domain: string) => (state: State): boolean => {
+  return get(state, domain, {}).isFetched;
+};
+
+const getIsFetchingSelector = (domain: string) => (state: State): boolean => {
+  const isFetching = get(state, domain, {}).isFetching;
+  const isFetched = getIsFetchedSelector(domain)(state);
+
+  return isFetching || !isFetched;
+};
+
+const getPayloadSelector = <P>(domain: string) => (state: State): P => {
+  return get(state, domain, {}).payload;
+};
+
+const getErrorSelector = (domain: string) => (
+  state: State,
+): SerializedError => {
+  return get(state, domain, {}).error;
+};
+
+export const getFetchSelectors = <P>(domain: string) => {
+  const isFetchingSelector = getIsFetchingSelector(domain);
+  const isFetchedSelector = getIsFetchedSelector(domain);
+  const payloadSelector = getPayloadSelector<P>(domain);
+  const errorSelector = getErrorSelector(domain);
+
+  return {
+    isFetching: isFetchingSelector,
+    useIsFetching: (): boolean => useSelector(isFetchingSelector),
+    isFetched: isFetchedSelector,
+    useIsFetched: (): boolean => useSelector(isFetchedSelector),
+    payload: payloadSelector,
+    usePayload: (): P => useSelector(payloadSelector),
+    error: errorSelector,
+    useError: (): SerializedError => useSelector(errorSelector),
+  };
+};

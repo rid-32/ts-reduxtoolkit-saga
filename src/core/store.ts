@@ -11,8 +11,6 @@ export default store;
 
 export type State = ReturnType<typeof store.getState>;
 
-// export type State = ReturnType<typeof store.getState>;
-
 // import { createStore, applyMiddleware, Store as ReduxStore } from 'redux';
 // import createSagaMiddleware from 'redux-saga';
 // import { composeWithDevTools } from 'redux-devtools-extension';

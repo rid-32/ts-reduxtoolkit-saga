@@ -4,17 +4,10 @@ import { ordersSelectors, ordersActions } from 'core/sellers';
 
 const Orders: React.FC = () => {
   const areOrdersFetching = ordersSelectors.useIsFetching();
-  const fetchOrders = ordersActions.useFetch();
+  const fetchOrders = ordersActions.useFetchThunk();
 
   useEffect(() => {
-    fetchOrders(undefined, {
-      handleSuccess: async ({ data }) => {
-        return data;
-      },
-      handleError: async error => {
-        throw new Error(`Origin error: ${error.message}`);
-      },
-    });
+    fetchOrders();
   }, []);
 
   if (areOrdersFetching) {
