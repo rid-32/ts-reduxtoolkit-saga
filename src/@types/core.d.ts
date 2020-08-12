@@ -6,11 +6,6 @@ declare namespace Core {
     error: object;
   };
 
-  type FetchSliceConfig<A, R> = {
-    domain: string;
-    apiMethod: (arg0: A) => Promise<R>;
-  };
-
   type ErrorHandler<D> = {
     handleError?: (arg: Error, dispatch: D, getState: unknown) => Promise<void>;
   };
