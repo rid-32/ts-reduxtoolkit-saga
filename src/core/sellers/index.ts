@@ -1,8 +1,18 @@
 import { combineReducers } from 'redux';
 
-import { createFetchSlice } from 'core/utils/fetch';
+import { createFetchSlice, createTableSlice } from 'core/utils';
 import * as CONSTS from './consts';
 import { fetchOrders } from 'api/sellers';
+import { getOrdersFulfilledHandler } from './actions';
+
+const {
+  reducer: ordersTableReducer,
+  selectors: ordersTableSelectors,
+  actions: ordersTableActions,
+} = createTableSlice({
+  domain: CONSTS.ORDERS_TABLE_DOMAIN,
+  initialState: CONSTS.ORDERS_TABLE_INITIAL_STATE,
+});
 
 const {
   reducer: ordersReducer,
@@ -11,19 +21,19 @@ const {
 } = createFetchSlice<Order.Element[], void, Order.Table>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
-  onFulfilled: async ({ apiResponse }) => {
-    const { data, total } = apiResponse;
-
-    console.log({ total });
-
-    return data;
-  },
+  onFulfilled: getOrdersFulfilledHandler(ordersTableActions),
 });
 
 export const reducers = {
   [CONSTS.SELLERS_SLICE]: combineReducers({
     [CONSTS.ORDERS_SLICE]: ordersReducer,
+    [CONSTS.ORDERS_TABLE_SLICE]: ordersTableReducer,
   }),
 };
 
-export { ordersSelectors, ordersActions };
+export {
+  ordersSelectors,
+  ordersActions,
+  ordersTableSelectors,
+  ordersTableActions,
+};

@@ -31,35 +31,40 @@ export type OnRejectedProps<A> = HandlerCommonProps<A> & {
   apiError: Error;
 };
 
-type SliceCommonConfig<A, R> = {
+type SliceCommonConfig<P, A, R> = {
   domain: string;
   apiMethod: (arg0: A) => Promise<R>;
   onRejected?: (arg0: OnRejectedProps<A>) => Promise<void>;
+  initialState?: Partial<FetchState<P>>;
 };
 
-export type SliceOptionalConfig<P, A> = SliceCommonConfig<A, P> & {
+export type SliceOptionalConfig<P, A> = SliceCommonConfig<P, A, P> & {
   onFulfilled?: (arg0: OnFulfilledProps<A, P>) => Promise<void>;
 };
 
-export type SliceRequiredConfig<P, A, R> = SliceCommonConfig<A, R> & {
+export type SliceRequiredConfig<P, A, R> = SliceCommonConfig<P, A, R> & {
   onFulfilled: (arg0: OnFulfilledProps<A, R>) => Promise<P>;
+};
+
+export type FetchSliceActions<P, A> = {
+  fetchReset: ActionCreatorWithoutPayload;
+  fetchThunk: AsyncThunk<P, A, {}>;
+  useFetchThunk: () => (arg0: A) => AsyncThunkAction<P, A, {}>;
+};
+
+export type FetchSliceSelectors<P> = {
+  isFetching: (state: State) => boolean;
+  useIsFetching: () => boolean;
+  isFetched: (state: State) => boolean;
+  useIsFetched: () => boolean;
+  payload: (state: State) => P;
+  usePayload: () => P;
+  error: (state: State) => SerializedError;
+  useError: () => SerializedError;
 };
 
 export type CreateFetchSliceResponse<P, A> = {
   reducer: Reducer<FetchState<P>, AnyAction>;
-  selectors: {
-    isFetching: (state: State) => boolean;
-    useIsFetching: () => boolean;
-    isFetched: (state: State) => boolean;
-    useIsFetched: () => boolean;
-    payload: (state: State) => P;
-    usePayload: () => P;
-    error: (state: State) => SerializedError;
-    useError: () => SerializedError;
-  };
-  actions: {
-    fetchReset: ActionCreatorWithoutPayload<string>;
-    fetchThunk: AsyncThunk<P, A, {}>;
-    useFetchThunk: () => (arg0: A) => AsyncThunkAction<P, A, {}>;
-  };
+  selectors: FetchSliceSelectors<P>;
+  actions: FetchSliceActions<P, A>;
 };

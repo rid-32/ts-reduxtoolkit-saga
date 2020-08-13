@@ -21,7 +21,10 @@ function createFetchSlice<P, A, R>(config: any): any {
 
   const { reducer, actions: sliceActions } = createSlice({
     name: config.domain,
-    initialState: getInitialFetchState<P>(),
+    initialState: {
+      ...getInitialFetchState<P>(),
+      ...(config.initialState || {}),
+    },
     reducers: {
       fetchReset: () => getInitialFetchState<null>(),
     },
