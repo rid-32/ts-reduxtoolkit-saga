@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import store from 'core/store';
 
-import Orders from 'ui/orders';
+import Orders from 'components/orders';
 
 const App: React.FC = () => {
   return (
