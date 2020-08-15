@@ -1,5 +1,8 @@
-// export const TABLE_INSTANCE = 'table';
-// export const DATA_INSTANCE = 'data';
+export const TABLE_SLICE = 'table';
+export const DATA_SLICE = 'data';
+
+export const getDataDomain = (domain: string) => `${domain}.${DATA_SLICE}`;
+export const getTableDomain = (domain: string) => `${domain}.${TABLE_SLICE}`;
 //
 // export const FETCH = 'dataTable@FETCH';
 // export const CHANGE_PAGE = 'dataTable@CHANGE_PAGE';

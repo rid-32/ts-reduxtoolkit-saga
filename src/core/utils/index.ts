@@ -17,3 +17,11 @@ export {
   TableQueryParams,
   SliceConfig as TableSliceConfig,
 } from './table/types';
+export { createDataTableSlice } from './dataTable';
+export {
+  DataTableState,
+  SliceOptionalConfig as DataTableSliceOptionalConfig,
+  SliceRequiredConfig as DataTableSliceRequiredConfig,
+  DataTableSliceActions,
+  DataTableSliceSelectors,
+} from './dataTable/types';
