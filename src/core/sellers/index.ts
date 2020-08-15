@@ -24,7 +24,7 @@ const {
   onFulfilled: getOrdersFulfilledHandler(ordersTableActions),
 });
 
-export const reducers = {
+export const reducer = {
   [CONSTS.SELLERS_SLICE]: combineReducers({
     [CONSTS.ORDERS_SLICE]: ordersReducer,
     [CONSTS.ORDERS_TABLE_SLICE]: ordersTableReducer,

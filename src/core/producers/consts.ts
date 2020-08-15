@@ -1,6 +1,4 @@
-// export const ROOT_INSTANCE = 'producers';
-// export const PRODUCTS_INSTANCE = 'products';
-//
-// export const FETCH_PRODUCTS = `${ROOT_INSTANCE}@FETCH_PRODUCTS`;
-//
-// export const PRODUCTS_DOMAIN = `${ROOT_INSTANCE}.${PRODUCTS_INSTANCE}`;
+export const PRODUCERS_SLICE = 'producers';
+export const PRODUCTS_SLICE = 'products';
+
+export const PRODUCTS_DOMAIN = `${PRODUCERS_SLICE}.${PRODUCTS_SLICE}`;

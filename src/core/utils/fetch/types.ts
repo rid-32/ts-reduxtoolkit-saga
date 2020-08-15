@@ -31,19 +31,29 @@ export type OnRejectedProps<A> = HandlerCommonProps<A> & {
   apiError: Error;
 };
 
+export type OnFulfilledOptional<A, R> = (
+  arg0: OnFulfilledProps<A, R>,
+) => Promise<void>;
+
+export type OnFulfilledRequired<P, A, R> = (
+  arg0: OnFulfilledProps<A, R>,
+) => Promise<P>;
+
+export type OnRejected<A> = (arg0: OnRejectedProps<A>) => Promise<void>;
+
 type SliceCommonConfig<P, A, R> = {
   domain: string;
   apiMethod: (arg0: A) => Promise<R>;
-  onRejected?: (arg0: OnRejectedProps<A>) => Promise<void>;
+  onRejected?: OnRejected<A>;
   initialState?: Partial<FetchState<P>>;
 };
 
 export type SliceOptionalConfig<P, A> = SliceCommonConfig<P, A, P> & {
-  onFulfilled?: (arg0: OnFulfilledProps<A, P>) => Promise<void>;
+  onFulfilled?: OnFulfilledOptional<A, P>;
 };
 
 export type SliceRequiredConfig<P, A, R> = SliceCommonConfig<P, A, R> & {
-  onFulfilled: (arg0: OnFulfilledProps<A, R>) => Promise<P>;
+  onFulfilled: OnFulfilledRequired<P, A, R>;
 };
 
 export type FetchSliceActions<P, A> = {

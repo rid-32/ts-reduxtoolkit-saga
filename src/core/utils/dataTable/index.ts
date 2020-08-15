@@ -17,18 +17,6 @@ function createDataTableSlice<P, A, R>(
 ): CreateDataTableSliceResponse<P, A>;
 function createDataTableSlice<P, A, R>(config: any): any {
   const {
-    reducer: fetchReducer,
-    selectors: fetchSelectors,
-    actions: fetchActions,
-  } = createFetchSlice<P, A, R>({
-    domain: CONSTS.getDataDomain(config.domain),
-    apiMethod: config.apiMethod,
-    onFulfilled: config.onFulfilled,
-    onRejected: config.onRejected,
-    initialState: config.initialDataState,
-  });
-
-  const {
     reducer: tableReducer,
     selectors: tableSelectors,
     actions: tableActions,
@@ -36,6 +24,28 @@ function createDataTableSlice<P, A, R>(config: any): any {
     domain: CONSTS.getTableDomain(config.domain),
     initialState: config.initialTableState,
   });
+
+  const fetchConfig = {
+    domain: CONSTS.getDataDomain(config.domain),
+    apiMethod: config.apiMethod,
+    onFulfilled: config.onFulfilled,
+    onRejected: config.onRejected,
+    initialState: config.initialDataState,
+  };
+
+  if (config.onFulfilled) {
+    fetchConfig.onFulfilled = config.onFulfilled(tableActions);
+  }
+
+  if (config.onRejected) {
+    fetchConfig.onRejected = config.onRejected(tableActions);
+  }
+
+  const {
+    reducer: fetchReducer,
+    selectors: fetchSelectors,
+    actions: fetchActions,
+  } = createFetchSlice<P, A, R>(fetchConfig);
 
   const reducer = combineReducers({
     [CONSTS.DATA_SLICE]: fetchReducer,

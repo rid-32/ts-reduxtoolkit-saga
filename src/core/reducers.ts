@@ -1,5 +1,7 @@
-import { reducers as sellersReducers } from './sellers';
+import { reducer as sellersReducerMap } from './sellers';
+import { reducer as producersReducerMap } from './producers';
 
 export default {
-  ...sellersReducers,
+  ...sellersReducerMap,
+  ...producersReducerMap,
 };

@@ -1,4 +1,14 @@
-// import * as CONSTS from './consts';
-// import { getDataTableActions } from 'core/utils/dataTable';
-//
-// export const productsTableActions = getDataTableActions(CONSTS.FETCH_PRODUCTS);
+import { DataTableSliceActions, OnFulfilledProps } from 'core/utils';
+
+export const handleProductsFulfilled = (
+  actions: DataTableSliceActions<Product.Element[], void>,
+) => async ({
+  apiResponse,
+  dispatch,
+}: OnFulfilledProps<void, Product.Table>) => {
+  const { data, total } = apiResponse;
+
+  dispatch(actions.changeTotal(total));
+
+  return data;
+};

@@ -6,6 +6,9 @@ import {
   FetchState,
   FetchSliceActions,
   FetchSliceSelectors,
+  OnRejected,
+  OnFulfilledOptional,
+  OnFulfilledRequired,
 } from 'core/utils/fetch/types';
 import {
   TableState,
@@ -18,22 +21,27 @@ export type DataTableState<P> = {
   table: TableState;
 };
 
-type InitialStates<P> = {
+type CommonConfig<P, A> = {
   initialDataState?: FetchState<P>;
   initialTableState?: TableState;
+  onRejected?: OnRejected<A>;
 };
 
 export type SliceOptionalConfig<P, A> = Omit<
   FetchSliceOptionalConfig<P, A>,
-  'initialState'
+  'initialState' | 'onFulfilled' | 'onRejected'
 > &
-  InitialStates<P>;
+  CommonConfig<P, A> & {
+    onFulfilled?: (arg0: TableSliceActions) => OnFulfilledOptional<A, P>;
+  };
 
 export type SliceRequiredConfig<P, A, R> = Omit<
   FetchSliceRequiredConfig<P, A, R>,
-  'initialState'
+  'initialState' | 'onFulfilled' | 'onRejected'
 > &
-  InitialStates<P>;
+  CommonConfig<P, A> & {
+    onFulfilled: (arg0: TableSliceActions) => OnFulfilledRequired<P, A, R>;
+  };
 
 export type DataTableSliceActions<P, A> = FetchSliceActions<P, A> &
   TableSliceActions;
