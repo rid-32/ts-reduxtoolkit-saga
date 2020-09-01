@@ -1,18 +1,21 @@
 import { combineReducers } from 'redux';
 
-import { createDataTableSlice } from 'core/utils/dataTable';
+import { createTableSlice } from 'models/shared/table';
 import * as CONSTS from './consts';
-import { fetchProducts } from 'api/producers';
+import { fetchProducts, FetchProductsProps } from 'services/producers';
 import { handleProductsFulfilled } from './actions';
 
 const {
   reducer: productsDataTableReducer,
   actions: productsDataTableActions,
   selectors: productsDataTableSelectors,
-} = createDataTableSlice<Product.Element[], void, Product.Table>({
+} = createTableSlice<Product.Element[], FetchProductsProps, Product.Table>({
   domain: CONSTS.PRODUCTS_DOMAIN,
   apiMethod: fetchProducts,
-  onFulfilled: handleProductsFulfilled,
+  onSuccess: handleProductsFulfilled,
+  initialTableState: {
+    pageSize: 3,
+  },
 });
 
 export const reducer = {

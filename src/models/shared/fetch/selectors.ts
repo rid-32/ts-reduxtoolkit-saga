@@ -2,7 +2,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
-import { State } from 'core/store';
+import { State } from 'models/store';
 
 const getIsFetchedSelector = (domain: string) => (state: State): boolean => {
   return get(state, domain, {}).isFetched;

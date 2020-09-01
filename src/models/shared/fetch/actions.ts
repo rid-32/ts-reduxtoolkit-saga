@@ -9,15 +9,15 @@ function getFetchThunk<P, A>(
 function getFetchThunk<P, A, R>(
   config: SliceRequiredConfig<P, A, R>,
 ): AsyncThunk<P, A, {}>;
-function getFetchThunk<P, A>({ domain, apiMethod, onFulfilled, onRejected }) {
+function getFetchThunk<P, A>({ domain, apiMethod, onSuccess, onFailure }) {
   return createAsyncThunk<P, A>(
     getFetchDomain(domain),
     async (payload, { dispatch, getState }) => {
       try {
         const apiResponse = await apiMethod(payload);
 
-        if (onFulfilled) {
-          const handlerResponse = await onFulfilled({
+        if (onSuccess) {
+          const handlerResponse = await onSuccess({
             apiArg: payload,
             apiResponse,
             dispatch,
@@ -29,8 +29,8 @@ function getFetchThunk<P, A>({ domain, apiMethod, onFulfilled, onRejected }) {
 
         return apiResponse;
       } catch (error) {
-        if (onRejected) {
-          await onRejected({
+        if (onFailure) {
+          await onFailure({
             apiArg: payload,
             apiError: error,
             dispatch,

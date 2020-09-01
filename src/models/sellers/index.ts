@@ -1,17 +1,17 @@
 import { combineReducers } from 'redux';
 
-import { createFetchSlice, createTableSlice } from 'core/utils';
+import { createFetchSlice, createTableControlSlice } from 'models/shared';
 import * as CONSTS from './consts';
-import { fetchOrders } from 'api/sellers';
+import { fetchOrders } from 'services/sellers';
 import { getOrdersFulfilledHandler } from './actions';
 
 const {
   reducer: ordersTableReducer,
   selectors: ordersTableSelectors,
   actions: ordersTableActions,
-} = createTableSlice({
+} = createTableControlSlice({
   domain: CONSTS.ORDERS_TABLE_DOMAIN,
-  initialState: CONSTS.ORDERS_TABLE_INITIAL_STATE,
+  initialState: CONSTS.ORDERS_TABLE_INITIAL_STATE_2,
 });
 
 const {
@@ -21,7 +21,7 @@ const {
 } = createFetchSlice<Order.Element[], void, Order.Table>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
-  onFulfilled: getOrdersFulfilledHandler(ordersTableActions),
+  onSuccess: getOrdersFulfilledHandler(ordersTableActions),
 });
 
 export const reducer = {

@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { productsDataTableActions } from 'core/producers';
+import {
+  productsDataTableActions,
+  productsDataTableSelectors,
+} from 'models/producers';
 
 export const useProductsFetching = (): void => {
   const fetchProducts = productsDataTableActions.useFetchThunk();
+  const queryParams = productsDataTableSelectors.useQueryParams();
 
   React.useEffect(() => {
-    fetchProducts();
+    fetchProducts({ params: queryParams });
   }, []);
 };

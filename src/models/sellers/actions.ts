@@ -1,7 +1,7 @@
-import { TableSliceActions, OnFulfilledProps } from 'core/utils';
+import { TableControlSliceActions, OnFulfilledProps } from 'models/shared';
 
 export const getOrdersFulfilledHandler = (
-  actions: TableSliceActions,
+  actions: TableControlSliceActions,
 ) => async ({ apiResponse, dispatch }: OnFulfilledProps<void, Order.Table>) => {
   const { data, total } = apiResponse;
 

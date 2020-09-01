@@ -26,7 +26,7 @@ function createFetchSlice<P, A, R>(config: any): any {
       ...(config.initialState || {}),
     },
     reducers: {
-      fetchReset: () => getInitialFetchState<null>(),
+      resetFetch: () => getInitialFetchState<null>(),
     },
     extraReducers: builder => {
       builder.addCase(fetchThunk.pending, (state): void => {

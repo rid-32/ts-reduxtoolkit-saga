@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
 import { TableSort, TableQueryParams } from './types';
-import { State } from 'core/store';
+import { State } from 'models/store';
 
 const getPageSelector = (domain: string) => (state: State): number => {
   return get(state, domain, {}).page;
@@ -34,7 +34,7 @@ const getQueryParamsSelector = (domain: string) => (
   };
 };
 
-export const getTableSelectors = (domain: string) => {
+export const getTableControlSelectors = (domain: string) => {
   const pageSelector = getPageSelector(domain);
   const pageSizeSelector = getPageSizeSelector(domain);
   const totalSelector = getTotalSelector(domain);

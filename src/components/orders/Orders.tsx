@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { ordersSelectors, ordersActions } from 'core/sellers';
+import { ordersSelectors, ordersActions } from 'models/sellers';
 // import { useBindedAction } from 'utils/hooks';
 
 // const thunkActionCreator = (payload: string) => async (dispatch, getState) => {

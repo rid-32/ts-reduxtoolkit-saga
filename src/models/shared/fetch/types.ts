@@ -8,7 +8,7 @@ import {
   AsyncThunkAction,
 } from '@reduxjs/toolkit';
 
-import { State } from 'core/store';
+import { State } from 'models/store';
 
 export type FetchState<P> = {
   isFetching: boolean;
@@ -23,41 +23,41 @@ type HandlerCommonProps<A> = {
   getState: () => unknown;
 };
 
-export type OnFulfilledProps<A, R> = HandlerCommonProps<A> & {
+export type OnSuccessProps<A, R> = HandlerCommonProps<A> & {
   apiResponse: R;
 };
 
-export type OnRejectedProps<A> = HandlerCommonProps<A> & {
+export type OnFailureProps<A> = HandlerCommonProps<A> & {
   apiError: Error;
 };
 
-export type OnFulfilledOptional<A, R> = (
-  arg0: OnFulfilledProps<A, R>,
+export type OnSuccessOptional<A, R> = (
+  arg0: OnSuccessProps<A, R>,
 ) => Promise<void>;
 
-export type OnFulfilledRequired<P, A, R> = (
-  arg0: OnFulfilledProps<A, R>,
+export type OnSuccessRequired<P, A, R> = (
+  arg0: OnSuccessProps<A, R>,
 ) => Promise<P>;
 
-export type OnRejected<A> = (arg0: OnRejectedProps<A>) => Promise<void>;
+export type OnFailure<A> = (arg0: OnFailureProps<A>) => Promise<void>;
 
 type SliceCommonConfig<P, A, R> = {
   domain: string;
   apiMethod: (arg0: A) => Promise<R>;
-  onRejected?: OnRejected<A>;
+  onRejected?: OnFailure<A>;
   initialState?: Partial<FetchState<P>>;
 };
 
 export type SliceOptionalConfig<P, A> = SliceCommonConfig<P, A, P> & {
-  onFulfilled?: OnFulfilledOptional<A, P>;
+  onSuccess?: OnSuccessOptional<A, P>;
 };
 
 export type SliceRequiredConfig<P, A, R> = SliceCommonConfig<P, A, R> & {
-  onFulfilled: OnFulfilledRequired<P, A, R>;
+  onSuccess: OnSuccessRequired<P, A, R>;
 };
 
 export type FetchSliceActions<P, A> = {
-  fetchReset: ActionCreatorWithoutPayload;
+  resetFetch: ActionCreatorWithoutPayload;
   fetchThunk: AsyncThunk<P, A, {}>;
   useFetchThunk: () => (arg0: A) => AsyncThunkAction<P, A, {}>;
 };

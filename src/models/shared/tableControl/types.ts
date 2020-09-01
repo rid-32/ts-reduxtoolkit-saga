@@ -1,13 +1,13 @@
 import { AnyAction, Reducer, ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
-import { State } from 'core/store';
+import { State } from 'models/store';
 
 export type TableSort = {
   field: string;
   dir: 'asc' | 'desc';
 };
 
-export type TableState = {
+export type TableControlState = {
   page: number;
   pageSize: number;
   total: number;
@@ -20,19 +20,19 @@ export type TableQueryParams = {
   sort: TableSort;
 };
 
-export type SliceConfig = {
+export type TableControlSliceConfig = {
   domain: string;
-  initialState?: Partial<TableState>;
+  initialState?: Partial<TableControlState>;
 };
 
-export type TableSliceActions = {
+export type TableControlSliceActions = {
   changePage: ActionCreatorWithPayload<number>;
   changePageSize: ActionCreatorWithPayload<number>;
   changeTotal: ActionCreatorWithPayload<number>;
   changeSort: ActionCreatorWithPayload<TableSort>;
 };
 
-export type TableSliceSelectors = {
+export type TableControlSliceSelectors = {
   page: (state: State) => number;
   usePage: () => number;
   pageSize: (state: State) => number;
@@ -45,8 +45,8 @@ export type TableSliceSelectors = {
   useQueryParams: () => TableQueryParams;
 };
 
-export type CreateTableSliceResponse = {
-  reducer: Reducer<TableState, AnyAction>;
-  actions: TableSliceActions;
-  selectors: TableSliceSelectors;
+export type CreateTableControlSliceResponse = {
+  reducer: Reducer<TableControlState, AnyAction>;
+  actions: TableControlSliceActions;
+  selectors: TableControlSliceSelectors;
 };

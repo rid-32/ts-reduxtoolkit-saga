@@ -5,7 +5,7 @@ export const ORDERS_TABLE_SLICE = 'ordersTable';
 export const ORDERS_DOMAIN = `${SELLERS_SLICE}.${ORDERS_SLICE}`;
 export const ORDERS_TABLE_DOMAIN = `${SELLERS_SLICE}.${ORDERS_TABLE_SLICE}`;
 
-export const ORDERS_TABLE_INITIAL_STATE = {
+export const ORDERS_TABLE_INITIAL_STATE_2 = {
   sort: {
     field: 'name',
     dir: 'desc' as const,

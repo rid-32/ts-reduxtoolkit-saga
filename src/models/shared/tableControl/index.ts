@@ -1,15 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { SliceConfig, TableSort, CreateTableSliceResponse } from './types';
-import { INITIAL_TABLE_STATE } from './consts';
-import { getTableSelectors } from './selectors';
+import {
+  TableControlSliceConfig,
+  TableSort,
+  CreateTableControlSliceResponse,
+} from './types';
+import { INITIAL_TABLE_CONTROL_STATE } from './consts';
+import { getTableControlSelectors } from './selectors';
 
-export const createTableSlice = (
-  config: SliceConfig,
-): CreateTableSliceResponse => {
+export const createTableControlSlice = (
+  config: TableControlSliceConfig,
+): CreateTableControlSliceResponse => {
   const { reducer, actions } = createSlice({
     name: config.domain,
-    initialState: { ...INITIAL_TABLE_STATE, ...(config.initialState || {}) },
+    initialState: {
+      ...INITIAL_TABLE_CONTROL_STATE,
+      ...(config.initialState || {}),
+    },
     reducers: {
       changePage: (state, { payload }: PayloadAction<number>) => {
         state.page = payload;
@@ -23,11 +30,11 @@ export const createTableSlice = (
       changeSort: (state, { payload }: PayloadAction<TableSort>) => {
         state.sort = payload;
       },
-      reset: () => INITIAL_TABLE_STATE,
+      reset: () => INITIAL_TABLE_CONTROL_STATE,
     },
   });
 
-  const selectors = getTableSelectors(config.domain);
+  const selectors = getTableControlSelectors(config.domain);
 
   return {
     reducer,
