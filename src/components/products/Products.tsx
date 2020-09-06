@@ -1,14 +1,12 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 
 import { useProductsFetching } from './hooks';
-import {
-  productsDataTableSelectors,
-  productsDataTableActions,
-} from 'models/producers';
+import { productsTableSelectors } from 'models/producers';
 
 const Products: FC = () => {
-  const isProductsFetching = productsDataTableSelectors.useIsFetching();
-  const products = productsDataTableSelectors.usePayload() || [];
+  const isInitialState = productsTableSelectors.useIsInitial();
+  const isProductsFetching = productsTableSelectors.useIsPending();
+  const products = productsTableSelectors.usePayload() || [];
   // const changePageAndFetch = productsDataTableActions.useChangePageAndFetch();
   //
   // const handleNextClick = useCallback(() => {
@@ -19,7 +17,7 @@ const Products: FC = () => {
 
   return (
     <div>
-      {isProductsFetching ? (
+      {isInitialState || isProductsFetching ? (
         <h3>Загрузка...</h3>
       ) : (
         <>

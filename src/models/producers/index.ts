@@ -6,9 +6,9 @@ import { fetchProducts, FetchProductsProps } from 'services/producers';
 import { handleProductsFulfilled } from './actions';
 
 const {
-  reducer: productsDataTableReducer,
-  actions: productsDataTableActions,
-  selectors: productsDataTableSelectors,
+  reducer: productsTableReducer,
+  actions: productsTableActions,
+  selectors: productsTableSelectors,
 } = createTableSlice<Product.Element[], FetchProductsProps, Product.Table>({
   domain: CONSTS.PRODUCTS_DOMAIN,
   apiMethod: fetchProducts,
@@ -20,8 +20,8 @@ const {
 
 export const reducer = {
   [CONSTS.PRODUCERS_SLICE]: combineReducers({
-    [CONSTS.PRODUCTS_SLICE]: productsDataTableReducer,
+    [CONSTS.PRODUCTS_SLICE]: productsTableReducer,
   }),
 };
 
-export { productsDataTableActions, productsDataTableSelectors };
+export { productsTableActions, productsTableSelectors };

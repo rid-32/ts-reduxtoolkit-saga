@@ -1,8 +1,7 @@
 import { FetchState } from './types';
 
 export const INITIAL_FETCH_STATE: FetchState<null> = {
-  isFetching: false,
-  isFetched: false,
+  status: 'INITIAL',
   payload: null,
   error: null,
 };

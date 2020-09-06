@@ -23,8 +23,8 @@ import {
 } from 'models/shared/tableControl/types';
 
 export type TableState<P> = {
-  data: FetchState<P>;
-  table: TableControlState;
+  fetchedData: FetchState<P>;
+  tableControl: TableControlState;
 };
 
 type CommonConfig<P, A> = {

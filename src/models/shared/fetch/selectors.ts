@@ -3,16 +3,30 @@ import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
 import { State } from 'models/store';
+import { FetchStatus } from './types';
 
-const getIsFetchedSelector = (domain: string) => (state: State): boolean => {
-  return get(state, domain, {}).isFetched;
+const getIsInitialSelector = (domain: string) => (state: State): boolean => {
+  const status = get(state, domain, {}).status as FetchStatus;
+
+  return status === 'INITIAL';
 };
 
-const getIsFetchingSelector = (domain: string) => (state: State): boolean => {
-  const isFetching = get(state, domain, {}).isFetching;
-  const isFetched = getIsFetchedSelector(domain)(state);
+const getIsPendingSelector = (domain: string) => (state: State): boolean => {
+  const status = get(state, domain, {}).status as FetchStatus;
 
-  return isFetching || !isFetched;
+  return status === 'PENDING';
+};
+
+const getIsSuccessSelector = (domain: string) => (state: State): boolean => {
+  const status = get(state, domain, {}).status as FetchStatus;
+
+  return status === 'SUCCESS';
+};
+
+const getIsFailureSelector = (domain: string) => (state: State): boolean => {
+  const status = get(state, domain, {}).status as FetchStatus;
+
+  return status === 'FAILURE';
 };
 
 const getPayloadSelector = <P>(domain: string) => (state: State): P => {
@@ -26,16 +40,22 @@ const getErrorSelector = (domain: string) => (
 };
 
 export const getFetchSelectors = <P>(domain: string) => {
-  const isFetchingSelector = getIsFetchingSelector(domain);
-  const isFetchedSelector = getIsFetchedSelector(domain);
+  const isInitialSelector = getIsInitialSelector(domain);
+  const isPendingSelector = getIsPendingSelector(domain);
+  const isSuccessSelector = getIsSuccessSelector(domain);
+  const isFailureSelector = getIsFailureSelector(domain);
   const payloadSelector = getPayloadSelector<P>(domain);
   const errorSelector = getErrorSelector(domain);
 
   return {
-    isFetching: isFetchingSelector,
-    useIsFetching: (): boolean => useSelector(isFetchingSelector),
-    isFetched: isFetchedSelector,
-    useIsFetched: (): boolean => useSelector(isFetchedSelector),
+    isInitial: isInitialSelector,
+    useIsInitial: (): boolean => useSelector(isInitialSelector),
+    isPending: isPendingSelector,
+    useIsFetching: (): boolean => useSelector(isPendingSelector),
+    isSuccess: isSuccessSelector,
+    useIsSuccess: (): boolean => useSelector(isSuccessSelector),
+    isFailure: isFailureSelector,
+    useIsFailure: (): boolean => useSelector(isFailureSelector),
     payload: payloadSelector,
     usePayload: (): P => useSelector(payloadSelector),
     error: errorSelector,

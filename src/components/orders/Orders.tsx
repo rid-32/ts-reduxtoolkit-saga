@@ -8,7 +8,8 @@ import { ordersSelectors, ordersActions } from 'models/sellers';
 // }
 
 const Orders: React.FC = () => {
-  const areOrdersFetching = ordersSelectors.useIsFetching();
+  const isInitialState = ordersSelectors.useIsInitial();
+  const areOrdersFetching = ordersSelectors.useIsPending();
   const fetchOrders = ordersActions.useFetchThunk();
   // const fetchOrders = useBindedAction(thunkActionCreator);
 
@@ -16,7 +17,7 @@ const Orders: React.FC = () => {
     fetchOrders();
   }, []);
 
-  if (areOrdersFetching) {
+  if (isInitialState || areOrdersFetching) {
     return <h3>Loading...</h3>;
   }
 

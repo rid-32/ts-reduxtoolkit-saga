@@ -10,9 +10,10 @@ import {
 
 import { State } from 'models/store';
 
+export type FetchStatus = 'INITIAL' | 'PENDING' | 'SUCCESS' | 'FAILURE';
+
 export type FetchState<P> = {
-  isFetching: boolean;
-  isFetched: boolean;
+  status: FetchStatus;
   payload: P;
   error: SerializedError;
 };
@@ -63,8 +64,14 @@ export type FetchSliceActions<P, A> = {
 };
 
 export type FetchSliceSelectors<P> = {
-  isFetching: (state: State) => boolean;
-  useIsFetching: () => boolean;
+  isInitial: (state: State) => boolean;
+  useIsInitial: () => boolean;
+  isPending: (state: State) => boolean;
+  useIsPending: () => boolean;
+  isSuccess: (state: State) => boolean;
+  useIsSuccess: () => boolean;
+  isFailure: (state: State) => boolean;
+  useIsFailure: () => boolean;
   isFetched: (state: State) => boolean;
   useIsFetched: () => boolean;
   payload: (state: State) => P;

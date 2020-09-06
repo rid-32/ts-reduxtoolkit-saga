@@ -30,18 +30,15 @@ function createFetchSlice<P, A, R>(config: any): any {
     },
     extraReducers: builder => {
       builder.addCase(fetchThunk.pending, (state): void => {
-        state.isFetching = true;
-        state.isFetched = false;
+        state.status = 'PENDING';
       });
       builder.addCase(fetchThunk.fulfilled, (state, action): void => {
-        state.isFetching = false;
-        state.isFetched = true;
+        state.status = 'SUCCESS';
         state.payload = action.payload as Draft<P>;
         state.error = null;
       });
       builder.addCase(fetchThunk.rejected, (state, action): void => {
-        state.isFetching = false;
-        state.isFetched = true;
+        state.status = 'FAILURE';
         state.error = action.error;
       });
     },
