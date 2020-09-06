@@ -1,5 +1,5 @@
-export { createFetchSlice } from './fetch';
 export {
+  createFetchSlice,
   FetchState,
   FetchSliceConfig,
   OnSuccessProps,
@@ -9,16 +9,16 @@ export {
   FetchSliceSelectors,
   OnSuccessOptional,
   OnSuccessRequired,
-} from './fetch/types';
-export { createTableControlSlice } from './tableControl';
+} from './fetch';
 export {
+  createTableControlSlice,
   TableControlSliceActions,
   TableControlSliceSelectors,
   TableSort,
   TableControlState,
   TableQueryParams,
   TableControlSliceConfig,
-} from './tableControl/types';
+} from './tableControl';
 // export { createTableSlice } from './table';
 // export {
 //   TableState,
