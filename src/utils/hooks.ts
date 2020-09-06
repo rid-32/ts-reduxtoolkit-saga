@@ -12,7 +12,7 @@ function useBindedAction<A extends unknown[], R>(
   action: (...args: A) => PayloadAction<R>,
 ): (...args: A) => PayloadAction<R>;
 function useBindedAction<A, R>(
-  action: AsyncThunk<R, A, {}>,
+  action: AsyncThunk<R, A, Record<string, unknown>>,
 ): (arg: A) => ReturnType<typeof action>;
 function useBindedAction(action: any): any {
   const dispatch = useDispatch();

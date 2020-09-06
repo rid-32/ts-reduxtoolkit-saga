@@ -89,12 +89,16 @@ export type FetchSliceSelectors<P> = {
 export type FetchThunkOptional<P, A> = (
   arg0: A,
   arg1: FetchThunkConfigOptional<P, A>,
-) => ReturnType<AsyncThunk<P, FetchThunkArgOptional<P, A>, {}>>;
+) => ReturnType<
+  AsyncThunk<P, FetchThunkArgOptional<P, A>, Record<string, unknown>>
+>;
 
 export type FetchThunkRequired<P, A, R> = (
   arg0: A,
   arg1: FetchThunkConfigRequired<P, A, R>,
-) => ReturnType<AsyncThunk<P, FetchThunkArgRequired<P, A, R>, {}>>;
+) => ReturnType<
+  AsyncThunk<P, FetchThunkArgRequired<P, A, R>, Record<string, unknown>>
+>;
 
 export type FetchSliceActionsOptional<P, A> = {
   resetFetch: ActionCreatorWithoutPayload;

@@ -11,10 +11,10 @@ import {
 
 function getFetchThunk<P, A>(
   config: FetchSliceConfig<P, A, P>,
-): AsyncThunk<P, FetchThunkArgOptional<P, A>, {}>;
+): AsyncThunk<P, FetchThunkArgOptional<P, A>, Record<string, unknown>>;
 function getFetchThunk<P, A, R>(
   config: FetchSliceConfig<P, A, R>,
-): AsyncThunk<P, FetchThunkArgRequired<P, A, R>, {}>;
+): AsyncThunk<P, FetchThunkArgRequired<P, A, R>, Record<string, unknown>>;
 function getFetchThunk({ domain, apiMethod }) {
   return createAsyncThunk<unknown, unknown>(
     getFetchDomain(domain),
