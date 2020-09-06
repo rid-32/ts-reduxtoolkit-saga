@@ -51,7 +51,7 @@ export const getFetchSelectors = <P>(domain: string) => {
     isInitial: isInitialSelector,
     useIsInitial: (): boolean => useSelector(isInitialSelector),
     isPending: isPendingSelector,
-    useIsFetching: (): boolean => useSelector(isPendingSelector),
+    useIsPending: (): boolean => useSelector(isPendingSelector),
     isSuccess: isSuccessSelector,
     useIsSuccess: (): boolean => useSelector(isSuccessSelector),
     isFailure: isFailureSelector,

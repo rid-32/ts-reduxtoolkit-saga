@@ -1,3 +1,5 @@
+import { OrdersTable } from 'models/sellers/types';
+
 const orders = [
   {
     id: '1',
@@ -13,7 +15,7 @@ const orders = [
   },
 ];
 
-export const fetchOrders = (): Promise<Order.Table> =>
+export const fetchOrders = (): Promise<OrdersTable> =>
   new Promise((res, rej): void => {
     setTimeout((): void => {
       res({ data: orders, total: orders.length });

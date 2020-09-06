@@ -5,7 +5,3 @@ export const INITIAL_FETCH_STATE: FetchState<null> = {
   payload: null,
   error: null,
 };
-
-export const getInitialFetchState = <P>(): FetchState<P> => INITIAL_FETCH_STATE;
-
-export const getFetchDomain = (domain: string): string => `${domain}/fetch`;

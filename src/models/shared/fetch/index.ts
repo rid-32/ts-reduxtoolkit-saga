@@ -1,23 +1,23 @@
-import { createSlice, Draft } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import { getInitialFetchState } from './consts';
+import { getInitialFetchState } from './utils';
 import { getFetchSelectors } from './selectors';
-import { getFetchThunk } from './actions';
+import { getFetchThunkWrapper } from './actions';
 import {
-  SliceOptionalConfig,
-  SliceRequiredConfig,
-  CreateFetchSliceResponse,
+  FetchSliceConfig,
+  CreateFetchSliceResponseOptional,
+  CreateFetchSliceResponseRequired,
 } from './types';
 
 function createFetchSlice<P, A = void>(
-  config: SliceOptionalConfig<P, A>,
-): CreateFetchSliceResponse<P, A>;
+  config: FetchSliceConfig<P, A, P>,
+): CreateFetchSliceResponseOptional<P, A>;
 function createFetchSlice<P, A, R>(
-  config: SliceRequiredConfig<P, A, R>,
-): CreateFetchSliceResponse<P, A>;
+  config: FetchSliceConfig<P, A, R>,
+): CreateFetchSliceResponseRequired<P, A, R>;
 function createFetchSlice<P, A, R>(config: any): any {
-  const fetchThunk = getFetchThunk<P, A, R>(config);
+  const fetchThunk = getFetchThunkWrapper<P, A, R>(config);
 
   const { reducer, actions: sliceActions } = createSlice({
     name: config.domain,
@@ -29,15 +29,15 @@ function createFetchSlice<P, A, R>(config: any): any {
       resetFetch: () => getInitialFetchState<null>(),
     },
     extraReducers: builder => {
-      builder.addCase(fetchThunk.pending, (state): void => {
+      builder.addCase(fetchThunk['pending'], (state): void => {
         state.status = 'PENDING';
       });
-      builder.addCase(fetchThunk.fulfilled, (state, action): void => {
+      builder.addCase(fetchThunk['fulfilled'], (state, action): void => {
         state.status = 'SUCCESS';
-        state.payload = action.payload as Draft<P>;
+        state.payload = action.payload;
         state.error = null;
       });
-      builder.addCase(fetchThunk.rejected, (state, action): void => {
+      builder.addCase(fetchThunk['rejected'], (state, action): void => {
         state.status = 'FAILURE';
         state.error = action.error;
       });
@@ -46,11 +46,11 @@ function createFetchSlice<P, A, R>(config: any): any {
 
   const selectors = getFetchSelectors<P>(config.domain);
   const actions = {
-    fetchThunk,
+    fetchThunk: fetchThunk,
     useFetchThunk: () => {
       const dispatch = useDispatch();
 
-      return (arg: A) => dispatch(fetchThunk(arg));
+      return (arg: A, config: any) => dispatch(fetchThunk(arg, config));
     },
     ...sliceActions,
   };

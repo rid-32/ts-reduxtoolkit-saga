@@ -1,18 +1,24 @@
 import { createAsyncThunk, AsyncThunk } from '@reduxjs/toolkit';
 
-import { getFetchDomain } from './consts';
-import { SliceOptionalConfig, SliceRequiredConfig } from './types';
+import { getFetchDomain } from './utils';
+import {
+  FetchSliceConfig,
+  FetchThunkArgOptional,
+  FetchThunkArgRequired,
+  FetchThunkConfigOptional,
+  FetchThunkConfigRequired,
+} from './types';
 
 function getFetchThunk<P, A>(
-  config: SliceOptionalConfig<P, A>,
-): AsyncThunk<P, A, {}>;
+  config: FetchSliceConfig<P, A, P>,
+): AsyncThunk<P, FetchThunkArgOptional<P, A>, {}>;
 function getFetchThunk<P, A, R>(
-  config: SliceRequiredConfig<P, A, R>,
-): AsyncThunk<P, A, {}>;
-function getFetchThunk<P, A>({ domain, apiMethod, onSuccess, onFailure }) {
-  return createAsyncThunk<P, A>(
+  config: FetchSliceConfig<P, A, R>,
+): AsyncThunk<P, FetchThunkArgRequired<P, A, R>, {}>;
+function getFetchThunk({ domain, apiMethod }) {
+  return createAsyncThunk<unknown, unknown>(
     getFetchDomain(domain),
-    async (payload, { dispatch, getState }) => {
+    async ({ payload, onSuccess, onFailure }, { dispatch, getState }) => {
       try {
         const apiResponse = await apiMethod(payload);
 
@@ -44,4 +50,27 @@ function getFetchThunk<P, A>({ domain, apiMethod, onSuccess, onFailure }) {
   );
 }
 
-export { getFetchThunk };
+function getFetchThunkWrapper<P, A>(
+  config: FetchSliceConfig<P, A, P>,
+): (payload: A, thunkConfig: FetchThunkConfigOptional<P, A>) => any;
+function getFetchThunkWrapper<P, A, R>(
+  config: FetchSliceConfig<P, A, R>,
+): (payload: A, thunkConfig: FetchThunkConfigRequired<P, A, R>) => any;
+function getFetchThunkWrapper<P, A, R>(config: any) {
+  const originFetchThunk = getFetchThunk<P, A, R>(config);
+
+  function fetchThunk(payload: A, thunkConfig: any) {
+    return originFetchThunk({
+      payload,
+      ...thunkConfig,
+    });
+  }
+
+  fetchThunk['pending'] = originFetchThunk.pending;
+  fetchThunk['fulfilled'] = originFetchThunk.fulfilled;
+  fetchThunk['rejected'] = originFetchThunk.rejected;
+
+  return fetchThunk;
+}
+
+export { getFetchThunk, getFetchThunkWrapper };
