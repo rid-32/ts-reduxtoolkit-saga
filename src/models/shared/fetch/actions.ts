@@ -5,8 +5,8 @@ import {
   FetchSliceConfig,
   FetchThunkArgOptional,
   FetchThunkArgRequired,
-  FetchThunkConfigOptional,
-  FetchThunkConfigRequired,
+  FetchThunkOptional,
+  FetchThunkRequired,
 } from './types';
 
 function getFetchThunk<P, A>(
@@ -52,10 +52,10 @@ function getFetchThunk({ domain, apiMethod }) {
 
 function getFetchThunkWrapper<P, A>(
   config: FetchSliceConfig<P, A, P>,
-): (payload: A, thunkConfig: FetchThunkConfigOptional<P, A>) => any;
+): FetchThunkOptional<P, A>;
 function getFetchThunkWrapper<P, A, R>(
   config: FetchSliceConfig<P, A, R>,
-): (payload: A, thunkConfig: FetchThunkConfigRequired<P, A, R>) => any;
+): FetchThunkRequired<P, A, R>;
 function getFetchThunkWrapper<P, A, R>(config: any) {
   const originFetchThunk = getFetchThunk<P, A, R>(config);
 

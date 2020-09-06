@@ -4,12 +4,14 @@ import {
   ordersTableSelectors,
   ordersTableActions,
 } from './slice';
-import * as ordersActions from './actions';
+import { ordersActions } from './actions';
+import { ordersSagas } from './sagas';
 
 export {
   reducer,
   ordersSelectors,
-  ordersActions,
   ordersTableSelectors,
   ordersTableActions,
+  ordersActions,
+  ordersSagas,
 };

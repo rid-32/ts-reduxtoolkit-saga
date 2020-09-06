@@ -1,6 +1,9 @@
 import { useDispatch } from 'react-redux';
 
-import { ordersActions, ordersTableActions } from './slice';
+import {
+  ordersActions as ordersSliceActions,
+  ordersTableActions as ordersSliceTableActions,
+} from './slice';
 import { Order, OrdersTable } from './types';
 import { OnSuccessRequired } from 'models/shared';
 
@@ -10,19 +13,24 @@ const onOrdersSuccess: OnSuccessRequired<Order[], void, OrdersTable> = async ({
 }) => {
   const { data, total } = apiResponse;
 
-  dispatch(ordersTableActions.changeTotal(total));
+  dispatch(ordersSliceTableActions.changeTotal(total));
 
   return data;
 };
 
-export const fetchOrders = () => {
-  return ordersActions.fetchThunk(null, {
+const fetchOrders = () => {
+  return ordersSliceActions.fetchThunk(null, {
     onSuccess: onOrdersSuccess,
   });
 };
 
-export const useFetchOrders = () => {
+const useFetchOrders = () => {
   const dispatch = useDispatch();
 
   return () => dispatch(fetchOrders());
+};
+
+export const ordersActions = {
+  fetchOrders,
+  useFetchOrders,
 };

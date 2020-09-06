@@ -11,7 +11,7 @@ const {
   actions: ordersTableActions,
 } = createTableControlSlice({
   domain: CONSTS.ORDERS_TABLE_DOMAIN,
-  initialState: CONSTS.ORDERS_TABLE_INITIAL_STATE_2,
+  initialState: CONSTS.ORDERS_TABLE_INITIAL_STATE,
 });
 
 const {
