@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const common = require('./webpack.common.js');
@@ -11,7 +11,7 @@ const plugins = [
   new CleanWebpackPlugin(),
 ];
 
-module.exports = merge.smart(
+module.exports = merge(
   {
     mode: 'production',
     plugins,

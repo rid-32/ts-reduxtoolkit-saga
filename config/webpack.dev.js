@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const common = require('./webpack.common.js');
 
@@ -9,7 +9,7 @@ const plugins = [
   }),
 ];
 
-module.exports = merge.smart(
+module.exports = merge(
   {
     mode: 'development',
     plugins,
