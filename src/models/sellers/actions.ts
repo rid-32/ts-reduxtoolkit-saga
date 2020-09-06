@@ -10,16 +10,13 @@ const onOrdersSuccess: OnSuccessRequired<Order[], void, OrdersTable> = async ({
 }) => {
   const { data, total } = apiResponse;
 
-  console.log({ data, total });
-
   dispatch(ordersTableActions.changeTotal(total));
 
   return data;
 };
 
 export const fetchOrders = () => {
-  return ordersActions.fetchThunk({
-    payload: null,
+  return ordersActions.fetchThunk(null, {
     onSuccess: onOrdersSuccess,
   });
 };

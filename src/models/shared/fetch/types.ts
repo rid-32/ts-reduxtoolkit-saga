@@ -86,20 +86,26 @@ export type FetchSliceSelectors<P> = {
   useError: () => SerializedError;
 };
 
+export type FetchThunkOptional<P, A> = (
+  arg0: A,
+  arg1: FetchThunkConfigOptional<P, A>,
+) => ReturnType<AsyncThunk<P, FetchThunkArgOptional<P, A>, {}>>;
+
+export type FetchThunkRequired<P, A, R> = (
+  arg0: A,
+  arg1: FetchThunkConfigRequired<P, A, R>,
+) => ReturnType<AsyncThunk<P, FetchThunkArgRequired<P, A, R>, {}>>;
+
 export type FetchSliceActionsOptional<P, A> = {
   resetFetch: ActionCreatorWithoutPayload;
-  fetchThunk: AsyncThunk<P, FetchThunkArgOptional<P, A>, {}>;
-  useFetchThunk: () => (
-    arg: A,
-  ) => AsyncThunk<P, FetchThunkArgOptional<P, A>, {}>;
+  fetchThunk: FetchThunkOptional<P, A>;
+  useFetchThunk: () => FetchThunkOptional<P, A>;
 };
 
 export type FetchSliceActionsRequired<P, A, R> = {
   resetFetch: ActionCreatorWithoutPayload;
-  fetchThunk: AsyncThunk<P, FetchThunkArgRequired<P, A, R>, {}>;
-  useFetchThunk: () => (
-    arg: A,
-  ) => AsyncThunk<P, FetchThunkArgRequired<P, A, R>, {}>;
+  fetchThunk: FetchThunkRequired<P, A, R>;
+  useFetchThunk: () => FetchThunkRequired<P, A, R>;
 };
 
 type CreateFetchSliceResponseCommon<P> = {
