@@ -5,6 +5,7 @@ import {
   Reducer,
   ActionCreatorWithoutPayload,
   AsyncThunk,
+  ActionCreatorWithPayload,
 } from '@reduxjs/toolkit';
 
 import { State } from 'models/store';
@@ -100,14 +101,18 @@ export type FetchThunkRequired<P, A, R> = (
   AsyncThunk<P, FetchThunkArgRequired<P, A, R>, Record<string, unknown>>
 >;
 
-export type FetchSliceActionsOptional<P, A> = {
+type FetchSliceActionsCommon<A> = {
   resetFetch: ActionCreatorWithoutPayload;
+  fetchSaga: ActionCreatorWithPayload<A>;
+  useFetchSaga: () => ActionCreatorWithPayload<A>;
+};
+
+export type FetchSliceActionsOptional<P, A> = FetchSliceActionsCommon<A> & {
   fetchThunk: FetchThunkOptional<P, A>;
   useFetchThunk: () => FetchThunkOptional<P, A>;
 };
 
-export type FetchSliceActionsRequired<P, A, R> = {
-  resetFetch: ActionCreatorWithoutPayload;
+export type FetchSliceActionsRequired<P, A, R> = FetchSliceActionsCommon<A> & {
   fetchThunk: FetchThunkRequired<P, A, R>;
   useFetchThunk: () => FetchThunkRequired<P, A, R>;
 };
