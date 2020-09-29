@@ -23,7 +23,9 @@ const {
   apiMethod: fetchOrders,
 });
 
-ordersActions.fetchThunk(null);
+ordersActions.fetchThunk(null, {
+  onSuccess: async ({ apiResponse }) => apiResponse.data,
+});
 
 export const reducer = {
   [CONSTS.SELLERS_SLICE]: combineReducers({

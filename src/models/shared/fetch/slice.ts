@@ -8,7 +8,7 @@ import { FetchState, FetchSliceConfig, ApiMethodExtend } from './types';
 function createFetchSlice<P, AM extends ApiMethodExtend>(
   config: FetchSliceConfig<P, AM>,
 ) {
-  const { fetchThunk, fetchThunkWrapper } = getFetchThunkWrapper<P, AM>(config);
+  const fetchThunk = getFetchThunkWrapper<P, AM>(config);
 
   const { reducer, actions: sliceActions } = createSlice({
     name: config.domain,
@@ -49,7 +49,7 @@ function createFetchSlice<P, AM extends ApiMethodExtend>(
 
   const selectors = getFetchSelectors<P>(config.domain);
   const actions = {
-    fetchThunk: fetchThunkWrapper,
+    fetchThunk,
     // useFetchThunk: () => {
     //   const dispatch = useDispatch();
     //

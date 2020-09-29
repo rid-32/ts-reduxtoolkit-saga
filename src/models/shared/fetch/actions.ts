@@ -1,13 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { getFetchDomain } from './utils';
-import { FetchSliceConfig, ApiMethodExtend, FetchThunkArgs } from './types';
+import {
+  FetchSliceConfig,
+  ApiMethodExtend,
+  AsyncFetchThunkArgs,
+  FetchThunk,
+} from './types';
 
 function getFetchThunk<P, AM extends ApiMethodExtend>({
   domain,
   apiMethod,
 }: FetchSliceConfig<P, AM>) {
-  return createAsyncThunk<P, FetchThunkArgs<P, AM>>(
+  return createAsyncThunk<P, AsyncFetchThunkArgs<P, AM>>(
     getFetchDomain(domain),
     async ({ payload, onSuccess, onFailure }, { dispatch, getState }) => {
       try {
@@ -43,28 +48,21 @@ function getFetchThunk<P, AM extends ApiMethodExtend>({
 
 function getFetchThunkWrapper<P, AM extends ApiMethodExtend>(
   config: FetchSliceConfig<P, AM>,
-) {
+): FetchThunk<P, AM> {
   const fetchThunk = getFetchThunk<P, AM>(config);
 
-  type Payload = FetchThunkArgs<P, AM>['payload'];
-  type OnSuccess = FetchThunkArgs<P, AM>['onSuccess'];
-  type OnFailure = FetchThunkArgs<P, AM>['onFailure'];
-  type FetchThunkWrapperConfig = {
-    onSuccess: OnSuccess;
-    onFailure: OnFailure;
-  };
-
-  const fetchThunkWrapper = (
-    payload: Payload,
-    config?: FetchThunkWrapperConfig,
-  ) => {
+  const fetchThunkWrapper: any = (payload, config) => {
     return fetchThunk({
       payload,
       ...config,
     } as any);
   };
 
-  return { fetchThunk, fetchThunkWrapper };
+  fetchThunkWrapper.pending = fetchThunk.pending;
+  fetchThunkWrapper.fulfilled = fetchThunk.fulfilled;
+  fetchThunkWrapper.rejected = fetchThunk.rejected;
+
+  return fetchThunkWrapper;
 }
 
 export { getFetchThunkWrapper };
