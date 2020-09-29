@@ -2,39 +2,39 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
-import { State } from 'models/store';
+// import { State } from 'models/store';
 import { FetchStatus } from './types';
 
-const getIsInitialSelector = (domain: string) => (state: State): boolean => {
+const getIsInitialSelector = (domain: string) => (state: unknown): boolean => {
   const status = get(state, domain, {}).status as FetchStatus;
 
   return status === 'INITIAL';
 };
 
-const getIsPendingSelector = (domain: string) => (state: State): boolean => {
+const getIsPendingSelector = (domain: string) => (state: unknown): boolean => {
   const status = get(state, domain, {}).status as FetchStatus;
 
   return status === 'PENDING';
 };
 
-const getIsSuccessSelector = (domain: string) => (state: State): boolean => {
+const getIsSuccessSelector = (domain: string) => (state: unknown): boolean => {
   const status = get(state, domain, {}).status as FetchStatus;
 
   return status === 'SUCCESS';
 };
 
-const getIsFailureSelector = (domain: string) => (state: State): boolean => {
+const getIsFailureSelector = (domain: string) => (state: unknown): boolean => {
   const status = get(state, domain, {}).status as FetchStatus;
 
   return status === 'FAILURE';
 };
 
-const getPayloadSelector = <P>(domain: string) => (state: State): P => {
+const getPayloadSelector = <P>(domain: string) => (state: unknown): P => {
   return get(state, domain, {}).payload;
 };
 
 const getErrorSelector = (domain: string) => (
-  state: State,
+  state: unknown,
 ): SerializedError => {
   return get(state, domain, {}).error;
 };

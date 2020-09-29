@@ -1,34 +1,25 @@
-import { createAsyncThunk, AsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { getFetchDomain } from './utils';
-import {
-  FetchSliceConfig,
-  FetchThunkArgOptional,
-  FetchThunkArgRequired,
-  FetchThunkOptional,
-  FetchThunkRequired,
-} from './types';
+import { FetchSliceConfig, ApiMethodExtend, FetchThunkArgs } from './types';
 
-function getFetchThunk<P, A>(
-  config: FetchSliceConfig<P, A, P>,
-): AsyncThunk<P, FetchThunkArgOptional<P, A>, Record<string, unknown>>;
-function getFetchThunk<P, A, R>(
-  config: FetchSliceConfig<P, A, R>,
-): AsyncThunk<P, FetchThunkArgRequired<P, A, R>, Record<string, unknown>>;
-function getFetchThunk({ domain, apiMethod }) {
-  return createAsyncThunk<unknown, unknown>(
+function getFetchThunk<P, AM extends ApiMethodExtend>({
+  domain,
+  apiMethod,
+}: FetchSliceConfig<P, AM>) {
+  return createAsyncThunk<P, FetchThunkArgs<P, AM>>(
     getFetchDomain(domain),
     async ({ payload, onSuccess, onFailure }, { dispatch, getState }) => {
       try {
         const apiResponse = await apiMethod(payload);
 
         if (onSuccess) {
-          const handlerResponse = await onSuccess({
+          const handlerResponse = (await onSuccess({
             apiArg: payload,
             apiResponse,
             dispatch,
             getState,
-          });
+          })) as any;
 
           return handlerResponse || apiResponse;
         }
@@ -50,27 +41,30 @@ function getFetchThunk({ domain, apiMethod }) {
   );
 }
 
-function getFetchThunkWrapper<P, A>(
-  config: FetchSliceConfig<P, A, P>,
-): FetchThunkOptional<P, A>;
-function getFetchThunkWrapper<P, A, R>(
-  config: FetchSliceConfig<P, A, R>,
-): FetchThunkRequired<P, A, R>;
-function getFetchThunkWrapper<P, A, R>(config: any) {
-  const originFetchThunk = getFetchThunk<P, A, R>(config);
+function getFetchThunkWrapper<P, AM extends ApiMethodExtend>(
+  config: FetchSliceConfig<P, AM>,
+) {
+  const fetchThunk = getFetchThunk<P, AM>(config);
 
-  function fetchThunk(payload: A, thunkConfig: any) {
-    return originFetchThunk({
+  type Payload = FetchThunkArgs<P, AM>['payload'];
+  type OnSuccess = FetchThunkArgs<P, AM>['onSuccess'];
+  type OnFailure = FetchThunkArgs<P, AM>['onFailure'];
+  type FetchThunkWrapperConfig = {
+    onSuccess: OnSuccess;
+    onFailure: OnFailure;
+  };
+
+  const fetchThunkWrapper = (
+    payload: Payload,
+    config?: FetchThunkWrapperConfig,
+  ) => {
+    return fetchThunk({
       payload,
-      ...thunkConfig,
-    });
-  }
+      ...config,
+    } as any);
+  };
 
-  fetchThunk['pending'] = originFetchThunk.pending;
-  fetchThunk['fulfilled'] = originFetchThunk.fulfilled;
-  fetchThunk['rejected'] = originFetchThunk.rejected;
-
-  return fetchThunk;
+  return { fetchThunk, fetchThunkWrapper };
 }
 
-export { getFetchThunk, getFetchThunkWrapper };
+export { getFetchThunkWrapper };

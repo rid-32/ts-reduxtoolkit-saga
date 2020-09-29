@@ -1,53 +1,46 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
+import { createSlice, PayloadAction, Draft } from '@reduxjs/toolkit';
+// import { useDispatch } from 'react-redux';
 
 import { getInitialFetchState } from './utils';
 import { getFetchSelectors } from './selectors';
 import { getFetchThunkWrapper } from './actions';
-import {
-  FetchState,
-  FetchSliceConfig,
-  CreateFetchSliceResponseOptional,
-  CreateFetchSliceResponseRequired,
-} from './types';
-
-function createFetchSlice<P, A = void>(
-  config: FetchSliceConfig<P, A, P>,
-): CreateFetchSliceResponseOptional<P, A>;
-function createFetchSlice<P, A, R>(
-  config: FetchSliceConfig<P, A, R>,
-): CreateFetchSliceResponseRequired<P, A, R>;
-function createFetchSlice<P, A, R>(config: any): any {
-  const fetchThunk = getFetchThunkWrapper<P, A, R>(config);
+import { FetchState, FetchSliceConfig, ApiMethodExtend } from './types';
+function createFetchSlice<P, AM extends ApiMethodExtend>(
+  config: FetchSliceConfig<P, AM>,
+) {
+  const { fetchThunk, fetchThunkWrapper } = getFetchThunkWrapper<P, AM>(config);
 
   const { reducer, actions: sliceActions } = createSlice({
     name: config.domain,
     initialState: {
-      ...getInitialFetchState<P>(),
+      ...getInitialFetchState(),
       ...(config.initialState || {}),
     },
     reducers: {
-      resetFetch: (state: FetchState<P>) => {
-        const { status, payload, error } = getInitialFetchState<null>();
+      resetFetch: (state: FetchState<Draft<P>>) => {
+        const { status, payload, error } = getInitialFetchState();
+
         state.status = status;
         state.payload = payload;
         state.error = error;
       },
-      /* eslint-disable-next-line */
-      fetchSaga: (state: FetchState<P>, action: PayloadAction<A>) => {
+      fetchSaga: (
+        state: FetchState<Draft<P>>, // eslint-disable-line
+        action: PayloadAction<any>, // eslint-disable-line
+      ) => {
         /* creating an action for corresponding saga  */
       },
     },
     extraReducers: builder => {
-      builder.addCase(fetchThunk['pending'], (state): void => {
+      builder.addCase(fetchThunk.pending, (state): void => {
         state.status = 'PENDING';
       });
-      builder.addCase(fetchThunk['fulfilled'], (state, action): void => {
+      builder.addCase(fetchThunk.fulfilled, (state, action): void => {
         state.status = 'SUCCESS';
-        state.payload = action.payload;
+        state.payload = action.payload as Draft<P>;
         state.error = null;
       });
-      builder.addCase(fetchThunk['rejected'], (state, action): void => {
+      builder.addCase(fetchThunk.rejected, (state, action): void => {
         state.status = 'FAILURE';
         state.error = action.error;
       });
@@ -56,18 +49,18 @@ function createFetchSlice<P, A, R>(config: any): any {
 
   const selectors = getFetchSelectors<P>(config.domain);
   const actions = {
-    fetchThunk,
-    useFetchThunk: () => {
-      const dispatch = useDispatch();
-
-      return (arg: A, config: any) => dispatch(fetchThunk(arg, config));
-    },
+    fetchThunk: fetchThunkWrapper,
+    // useFetchThunk: () => {
+    //   const dispatch = useDispatch();
+    //
+    //   return (arg: A, config: any) => dispatch(fetchThunk(arg, config));
+    // },
     ...sliceActions,
-    useFetchSaga: () => {
-      const dispatch = useDispatch();
-
-      return (arg: A) => dispatch(sliceActions.fetchSaga(arg));
-    },
+    // useFetchSaga: () => {
+    //   const dispatch = useDispatch();
+    //
+    //   return (arg: A) => dispatch(sliceActions.fetchSaga(arg));
+    // },
   };
 
   return {

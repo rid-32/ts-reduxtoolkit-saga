@@ -9,6 +9,7 @@
     "baseUrl": ".",
     "moduleResolution": "node",
     "downlevelIteration": true,
+    "strictNullChecks": true,
     "paths": {
       "images/*": ["./public/assets/images/*"],
       "*": ["./src/*"]

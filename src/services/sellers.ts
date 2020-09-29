@@ -1,4 +1,4 @@
-import { OrdersTable } from 'models/sellers/types';
+import { OrdersTable, Order } from 'models/sellers/types';
 
 const orders = [
   {
@@ -15,10 +15,12 @@ const orders = [
   },
 ];
 
+// export const fetchOrders = (): Promise<Order[]> =>
 export const fetchOrders = (): Promise<OrdersTable> =>
   new Promise((res, rej): void => {
     setTimeout((): void => {
       res({ data: orders, total: orders.length });
+      // res(orders);
       // rej(new Error('Some json'));
     }, 2000);
   });
