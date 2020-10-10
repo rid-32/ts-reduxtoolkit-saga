@@ -1,28 +1,24 @@
 import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
-import { TableSort, TableQueryParams } from './types';
-import { State } from 'models/store';
 
-const getPageSelector = (domain: string) => (state: State): number => {
+const getPageSelector = domain => state => {
   return get(state, domain, {}).page;
 };
 
-const getPageSizeSelector = (domain: string) => (state: State): number => {
+const getPageSizeSelector = domain => state => {
   return get(state, domain, {}).pageSize;
 };
 
-const getTotalSelector = (domain: string) => (state: State): number => {
+const getTotalSelector = domain => state => {
   return get(state, domain, {}).total;
 };
 
-const getSortSelector = (domain: string) => (state: State): TableSort => {
+const getSortSelector = domain => state => {
   return get(state, domain, {}).sort;
 };
 
-const getQueryParamsSelector = (domain: string) => (
-  state: State,
-): TableQueryParams => {
+const getQueryParamsSelector = domain => state => {
   const page = getPageSelector(domain)(state);
   const pageSize = getPageSizeSelector(domain)(state);
   const sort = getSortSelector(domain)(state);
@@ -34,7 +30,7 @@ const getQueryParamsSelector = (domain: string) => (
   };
 };
 
-export const getTableControlSelectors = (domain: string) => {
+export const getTableControlSelectors = domain => {
   const pageSelector = getPageSelector(domain);
   const pageSizeSelector = getPageSizeSelector(domain);
   const totalSelector = getTotalSelector(domain);
@@ -43,14 +39,14 @@ export const getTableControlSelectors = (domain: string) => {
 
   return {
     page: pageSelector,
-    usePage: (): number => useSelector(pageSelector),
+    usePage: () => useSelector(pageSelector),
     pageSize: pageSizeSelector,
-    usePageSize: (): number => useSelector(pageSizeSelector),
+    usePageSize: () => useSelector(pageSizeSelector),
     total: totalSelector,
-    useTotal: (): number => useSelector(totalSelector),
+    useTotal: () => useSelector(totalSelector),
     sort: sortSelector,
-    useSort: (): TableSort => useSelector(sortSelector),
+    useSort: () => useSelector(sortSelector),
     queryParams: queryParamsSelector,
-    useQueryParams: (): TableQueryParams => useSelector(queryParamsSelector),
+    useQueryParams: () => useSelector(queryParamsSelector),
   };
 };

@@ -5,14 +5,10 @@ import { ordersSelectors, ordersActions } from 'models/sellers';
 const Orders: React.FC = () => {
   const isInitialState = ordersSelectors.useIsInitial();
   const areOrdersFetching = ordersSelectors.useIsPending();
-  const fetchOrders = ordersActions.useFetchThunk();
+  const fetchOrders = ordersActions.useFetchOrders();
 
   useEffect(() => {
-    fetchOrders(null, {
-      onSuccess: async ({ apiResponse }) => {
-        return apiResponse.data;
-      },
-    });
+    fetchOrders();
   }, []);
 
   if (isInitialState || areOrdersFetching) {
