@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import { getInitialFetchState } from './utils';
 import { getFetchSelectors } from './selectors';
 import { getFetchThunkWrapper } from './actions';
+import { INITIAL_FETCH_STATE } from './consts';
 
 export const createFetchSlice = config => {
   const fetchThunk = getFetchThunkWrapper(config);
@@ -11,16 +11,14 @@ export const createFetchSlice = config => {
   const { reducer, actions: sliceActions } = createSlice({
     name: config.domain,
     initialState: {
-      ...getInitialFetchState(),
+      ...INITIAL_FETCH_STATE,
       ...(config.initialState || {}),
     },
     reducers: {
       resetFetch: state => {
-        const { status, payload, error } = getInitialFetchState();
-
-        state.status = status;
-        state.payload = payload;
-        state.error = error;
+        state.status = INITIAL_FETCH_STATE.status;
+        state.payload = INITIAL_FETCH_STATE.payload;
+        state.error = INITIAL_FETCH_STATE.error;
       },
       fetchSaga: (state, action) => {
         /* creating an action for corresponding saga  */
