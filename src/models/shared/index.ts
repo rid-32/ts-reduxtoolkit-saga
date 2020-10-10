@@ -1,15 +1,4 @@
-export {
-  createFetchSlice,
-  FetchState,
-  FetchSliceConfig,
-  OnSuccessProps,
-  OnFailureProps,
-  FetchSliceActionsOptional,
-  FetchSliceActionsRequired,
-  FetchSliceSelectors,
-  OnSuccessOptional,
-  OnSuccessRequired,
-} from './fetch';
+export { createFetchSlice, FetchState } from './fetch';
 export {
   createTableControlSlice,
   TableControlSliceActions,

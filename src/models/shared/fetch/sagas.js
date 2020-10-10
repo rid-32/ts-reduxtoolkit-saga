@@ -1,11 +1,8 @@
-import { PayloadAction } from '@reduxjs/toolkit';
 import { takeLatest, put, call } from 'redux-saga/effects';
 
 function getFetchSaga(apiMethod, actions) {
   return function* (config) {
-    yield takeLatest(actions.fetchSaga.type, function* (
-      action: PayloadAction<any>,
-    ) {
+    yield takeLatest(actions.fetchSaga.type, function* (action) {
       yield put(actions.fetchThunk.pending());
 
       try {

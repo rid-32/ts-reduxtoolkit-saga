@@ -3,8 +3,8 @@ import { AnyAction, Reducer, ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { State } from 'models/store';
 
 export type TableSort = {
-  field: string;
-  dir: 'asc' | 'desc';
+  field: string | null;
+  dir: 'asc' | 'desc' | null;
 };
 
 export type TableControlState = {

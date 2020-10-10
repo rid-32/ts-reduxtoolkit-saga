@@ -21,10 +21,7 @@ const {
 } = createFetchSlice<Order[], typeof fetchOrders>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
-});
-
-ordersActions.fetchThunk(null, {
-  onSuccess: async ({ apiResponse }) => apiResponse.data,
+  initialState: {},
 });
 
 export const reducer = {

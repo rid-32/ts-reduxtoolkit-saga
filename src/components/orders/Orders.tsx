@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 
 import { ordersSelectors, ordersActions } from 'models/sellers';
-// import { useBindedAction } from 'utils/hooks';
-
-// const thunkActionCreator = (payload: string) => async (dispatch, getState) => {
-//   return payload
-// }
 
 const Orders: React.FC = () => {
   const isInitialState = ordersSelectors.useIsInitial();
   const areOrdersFetching = ordersSelectors.useIsPending();
-  const fetchOrders = ordersActions.useFetchOrders();
-  // const fetchOrders = useBindedAction(thunkActionCreator);
+  const fetchOrders = ordersActions.useFetchThunk();
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(null, {
+      onSuccess: async ({ apiResponse }) => {
+        return apiResponse.data;
+      },
+    });
   }, []);
 
   if (isInitialState || areOrdersFetching) {
