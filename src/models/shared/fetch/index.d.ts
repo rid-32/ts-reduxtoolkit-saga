@@ -30,13 +30,13 @@ type AsyncFetchThunkArgs<P, AM> = AM extends (arg0: infer A) => PromiseLike<P>
       onSuccess?: (arg0: {
         apiArg: A;
         dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-        getState: () => unknown;
+        getState: () => State;
         apiResponse: P;
       }) => Promise<void>;
       onFailure?: (arg0: {
         apiArg: A;
         dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-        getState: () => unknown;
+        getState: () => State;
         apiError: Error;
       }) => Promise<void>;
     }
@@ -46,13 +46,13 @@ type AsyncFetchThunkArgs<P, AM> = AM extends (arg0: infer A) => PromiseLike<P>
       onSuccess: (arg0: {
         apiArg: B;
         dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-        getState: () => unknown;
+        getState: () => State;
         apiResponse: R;
       }) => Promise<P>;
       onFailure?: (arg0: {
         apiArg: B;
         dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-        getState: () => unknown;
+        getState: () => State;
         apiError: Error;
       }) => Promise<void>;
     }
@@ -65,23 +65,42 @@ type AsyncFetchThunk<P, AM> = AsyncThunk<
 >;
 
 type FetchThunkOptional<A, R, AM> = {
-  (
-    payload: A,
-    config?: {
-      preProcess?: (arg0: { getState: () => unknown }) => A;
-      onSuccess?: (arg0: {
-        apiArg: A;
-        apiResponse: R;
-        dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-        getState: () => unknown;
-      }) => Promise<void>;
-      onFailure?: (arg0: {
-        apiArg: A;
-        apiError: Error;
-        dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-        getState: () => unknown;
-      }) => Promise<void>;
-    },
+  <T>(
+    payload: T,
+    ...rest: T extends A
+      ? [
+          config?: {
+            onSuccess?: (arg0: {
+              apiArg: A;
+              apiResponse: R;
+              dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
+              getState: () => State;
+            }) => Promise<void>;
+            onFailure?: (arg0: {
+              apiArg: A;
+              apiError: Error;
+              dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
+              getState: () => State;
+            }) => Promise<void>;
+          },
+        ]
+      : [
+          config: {
+            preProcess: (arg0: { getState: () => State }) => A;
+            onSuccess?: (arg0: {
+              apiArg: A;
+              apiResponse: R;
+              dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
+              getState: () => State;
+            }) => Promise<void>;
+            onFailure?: (arg0: {
+              apiArg: A;
+              apiError: Error;
+              dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
+              getState: () => State;
+            }) => Promise<void>;
+          },
+        ]
   ): AsyncFetchThunk<R, AM>;
 } & {
   pending: () => void;
@@ -98,28 +117,28 @@ type FetchThunkRequired<A, R, P, AM> = {
             apiArg: A;
             apiResponse: R;
             dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-            getState: () => unknown;
+            getState: () => State;
           }) => Promise<P>;
           onFailure?: (arg0: {
             apiArg: A;
             apiError: Error;
             dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-            getState: () => unknown;
+            getState: () => State;
           }) => Promise<void>;
         }
       : {
-          preProcess: (arg0: { getState: () => unknown }) => A;
+          preProcess: (arg0: { getState: () => State }) => A;
           onSuccess: (arg0: {
             apiArg: A;
             apiResponse: R;
             dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-            getState: () => unknown;
+            getState: () => State;
           }) => Promise<P>;
           onFailure?: (arg0: {
             apiArg: A;
             apiError: Error;
             dispatch: ThunkDispatch<unknown, unknown, AnyAction>;
-            getState: () => unknown;
+            getState: () => State;
           }) => Promise<void>;
         },
   ): AsyncFetchThunk<P, AM>;
