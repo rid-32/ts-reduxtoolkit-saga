@@ -1,12 +1,11 @@
 import { put, takeLatest } from 'redux-saga/effects';
 
 import { ordersSagas, ordersTableActions } from './slice';
+import { SuccessSaga } from 'models/shared';
 
-type OrdersSuccessSaga = Parameters<
-  typeof ordersSagas.fetchSaga
->[0]['onSuccess'];
-
-const ordersSuccessSaga: OrdersSuccessSaga = function* ({ apiResponse }) {
+const ordersSuccessSaga: SuccessSaga<typeof ordersSagas.fetchSaga> = function* ({
+  apiResponse,
+}) {
   yield put(ordersTableActions.changeTotal(apiResponse.total));
 
   return apiResponse.data;

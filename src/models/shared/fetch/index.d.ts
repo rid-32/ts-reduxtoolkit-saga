@@ -136,6 +136,14 @@ type FetchSaga<P, AM> = AM extends (arg0: infer A) => PromiseLike<P>
   ? FetchSagaRequired<B, R, P>
   : any;
 
+export type SuccessSaga<Saga extends (arg: any) => any> = Parameters<
+  Saga
+>[0]['onSuccess'];
+
+export type FailureSaga<Saga extends (arg: any) => any> = Parameters<
+  Saga
+>[0]['onFailure'];
+
 type Selectors<P> = {
   isInitial: Selector<State, boolean>;
   useIsInitial: () => boolean;

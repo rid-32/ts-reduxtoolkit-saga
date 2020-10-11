@@ -1,4 +1,4 @@
-export { createFetchSlice, FetchState } from './fetch';
+export { createFetchSlice, FetchState, SuccessSaga } from './fetch';
 export {
   createTableControlSlice,
   TableSort,
