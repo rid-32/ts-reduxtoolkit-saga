@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { FC, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ordersSelectors, ordersActions } from 'models/sellers';
 
-const Orders: React.FC = () => {
+const Orders: FC = () => {
   const dispatch = useDispatch();
   const isInitialState = ordersSelectors.useIsInitial();
   const areOrdersFetching = ordersSelectors.useIsPending();
