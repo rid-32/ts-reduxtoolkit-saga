@@ -7,15 +7,15 @@ const Orders: FC = () => {
   const dispatch = useDispatch();
   const isInitialState = ordersSelectors.useIsInitial();
   const areOrdersFetching = ordersSelectors.useIsPending();
-  // const fetchOrders = ordersActions.useFetchOrders();
-  const fetchOrders = ordersActions.useFetchSaga();
+  const fetchOrders = ordersActions.useFetchOrders();
+  // const fetchOrders = ordersActions.useFetchSaga();
 
   const handleClick = useCallback(() => {
     dispatch({ type: 'SAGA_AFTER_FETCH_SAGA' });
   }, []);
 
   useEffect(() => {
-    fetchOrders(null);
+    fetchOrders();
   }, []);
 
   if (isInitialState || areOrdersFetching) {

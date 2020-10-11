@@ -6,9 +6,14 @@ import { getFetchDomain } from './utils';
 const getFetchThunk = ({ domain, apiMethod }) => {
   return createAsyncThunk(
     getFetchDomain(domain),
-    async ({ payload, onSuccess, onFailure }, { dispatch, getState }) => {
+    async (
+      { payload, preProcess, onSuccess, onFailure },
+      { dispatch, getState },
+    ) => {
       try {
-        const apiResponse = await apiMethod(payload);
+        const apiPayload = preProcess ? preProcess(payload) : payload;
+
+        const apiResponse = await apiMethod(apiPayload);
 
         if (onSuccess) {
           const handlerResponse = await onSuccess({

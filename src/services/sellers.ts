@@ -16,11 +16,14 @@ const orders = [
 ];
 
 // export const fetchOrders = (): Promise<Order[]> =>
-export const fetchOrders = (): Promise<OrdersTable> =>
-  new Promise((res, rej): void => {
+export const fetchOrders = (arg: string): Promise<OrdersTable> => {
+  console.log({ arg });
+
+  return new Promise((res, rej): void => {
     setTimeout((): void => {
       res({ data: orders, total: orders.length });
       // res(orders);
       // rej(new Error('Some json'));
     }, 2000);
   });
+};
