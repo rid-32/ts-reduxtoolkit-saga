@@ -1,24 +1,16 @@
-import { takeLatest } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 
-import { ordersActions } from './slice';
+import { ordersSagas, ordersTableActions } from './slice';
 
-// import { ordersActions, ordersSagas } from './slice';
+function* ordersSuccessSaga({ apiResponse }) {
+  yield put(ordersTableActions.changeTotal(apiResponse.total));
 
-// function* ordersSuccessSaga({ apiResponse }) {
-//   const { total } = apiResponse;
-//
-//   yield put(ordersTable.changeTotal.total);
-// }
+  return apiResponse.data;
+}
 
-export function* ordersSagas() {
-  yield takeLatest(ordersActions.fetchSaga.type, function* () {
-    yield console.log('HELLO WORLD');
+export default function* () {
+  yield call(ordersSagas.fetchSaga, {
+    onSuccess: ordersSuccessSaga,
   });
-  // yield takeLatest(
-  //   ordersActions.fetchSaga.type,
-  //   ordersSagas.createFetchSaga({
-  //     apiMethod: async () => {},
-  //     onSuccess: ordersSuccessSaga,
-  //   }),
-  // );
+  // TODO: add another saga to figure out if it works
 }

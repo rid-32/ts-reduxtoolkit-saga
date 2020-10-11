@@ -154,6 +154,7 @@ export function createFetchSlice<AM extends ApiMethodExtend>(
   selectors: AM extends (...args: any) => PromiseLike<infer R>
     ? Selectors<R>
     : any;
+  sagas: any;
 };
 
 export function createFetchSlice<P, AM extends ApiMethodExtend>(
@@ -174,4 +175,5 @@ export function createFetchSlice<P, AM extends ApiMethodExtend>(
       }
     : any;
   selectors: Selectors<P>;
+  sagas: any;
 };

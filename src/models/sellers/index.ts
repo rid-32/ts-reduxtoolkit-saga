@@ -1,6 +1,6 @@
 import { reducer } from './slice';
 import ordersActions from './actions';
 import ordersSelectors from './selectors';
-import { ordersSagas } from './sagas';
+import sagas from './sagas';
 
-export { reducer, ordersActions, ordersSelectors, ordersSagas };
+export { reducer, ordersActions, ordersSelectors, sagas };

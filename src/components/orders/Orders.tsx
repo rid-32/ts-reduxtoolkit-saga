@@ -5,10 +5,11 @@ import { ordersSelectors, ordersActions } from 'models/sellers';
 const Orders: React.FC = () => {
   const isInitialState = ordersSelectors.useIsInitial();
   const areOrdersFetching = ordersSelectors.useIsPending();
-  const fetchOrders = ordersActions.useFetchOrders();
+  // const fetchOrders = ordersActions.useFetchOrders();
+  const fetchOrders = ordersActions.useFetchSaga();
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(null);
   }, []);
 
   if (isInitialState || areOrdersFetching) {

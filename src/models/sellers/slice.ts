@@ -18,6 +18,7 @@ const {
   reducer: ordersReducer,
   selectors: ordersSelectors,
   actions: ordersActions,
+  sagas: ordersSagas,
 } = createFetchSlice<Order[], typeof fetchOrders>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
@@ -33,6 +34,7 @@ export const reducer = {
 export {
   ordersSelectors,
   ordersActions,
+  ordersSagas,
   ordersTableSelectors,
   ordersTableActions,
 };

@@ -1,40 +1,49 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 
-function getFetchSaga(apiMethod, actions) {
-  return function* (config) {
-    yield takeLatest(actions.fetchSaga.type, function* (action) {
-      yield put(actions.fetchThunk.pending());
+export const getFetchSagas = (apiMethod, actions) => {
+  return {
+    fetchSaga: function* (config) {
+      yield takeLatest(actions.fetchSaga.type, function* (action) {
+        yield put(actions.fetchThunk.pending());
 
-      try {
         const apiPayload = action.payload;
-        // const apiPayload = config.preProcessor
-        //   ? yield call(config.preProcessor, action.payload)
-        //   : action.payload;
-        const apiResponse = yield call(apiMethod, apiPayload);
-        let result = apiResponse;
 
-        if (config.onSuccess) {
-          const handledResponse = yield call(
-            config.onSuccess,
-            apiResponse,
-            apiPayload,
-          );
+        try {
+          // const apiPayload = config.preProcessor
+          //   ? yield call(config.preProcessor, action.payload)
+          //   : action.payload;
+          const apiResponse = yield call(apiMethod, apiPayload);
+          let result = apiResponse;
 
-          if (handledResponse) {
-            result = handledResponse;
+          if (config.onSuccess) {
+            const handledResponse = yield call(config.onSuccess, {
+              apiPayload,
+              apiResponse,
+            });
+
+            if (handledResponse) {
+              result = handledResponse;
+            }
           }
-        }
 
-        yield put(actions.fetchThunk.fulfilled(result));
-      } catch (error) {
-        if (config.onFailure) {
-          yield call(config.onFailure, error, action.payload);
-        }
+          yield put(actions.fetchThunk.fulfilled(result));
+        } catch (error) {
+          let resultError = error;
 
-        yield call(actions.fetchThunk.rejected(error));
-      }
-    });
+          if (config.onFailure) {
+            try {
+              yield call(config.onFailure, {
+                apiPayload,
+                apiError: error,
+              });
+            } catch (handleError) {
+              resultError = handleError;
+            }
+          }
+
+          yield call(actions.fetchThunk.rejected(resultError));
+        }
+      });
+    },
   };
-}
-
-export { getFetchSaga };
+};
