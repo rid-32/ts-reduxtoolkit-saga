@@ -6,6 +6,7 @@ import {
   AsyncThunk,
   Selector,
 } from '@reduxjs/toolkit';
+import { takeLatest } from 'redux-saga/effects';
 
 import { State } from 'models/store';
 
@@ -117,6 +118,24 @@ type FetchThunk<P, AM> = AM extends (arg0: infer A) => PromiseLike<P>
   ? FetchThunkRequired<B, R, P, AM>
   : any;
 
+type FetchSagaOptional<A, R> = {
+  (config?: {
+    onSuccess?: (arg0: { apiArg: A; apiResponse: R }) => Iterator<any, R>;
+  }): Generator<ReturnType<typeof takeLatest>, void>;
+};
+
+type FetchSagaRequired<A, R, P> = {
+  (config: {
+    onSuccess: (arg0: { apiArg: A; apiResponse: R }) => Iterator<any, P>;
+  }): Generator<ReturnType<typeof takeLatest>, void>;
+};
+
+type FetchSaga<P, AM> = AM extends (arg0: infer A) => PromiseLike<P>
+  ? FetchSagaOptional<A, P>
+  : AM extends (arg0: infer B) => PromiseLike<infer R>
+  ? FetchSagaRequired<B, R, P>
+  : any;
+
 type Selectors<P> = {
   isInitial: Selector<State, boolean>;
   useIsInitial: () => boolean;
@@ -154,7 +173,11 @@ export function createFetchSlice<AM extends ApiMethodExtend>(
   selectors: AM extends (...args: any) => PromiseLike<infer R>
     ? Selectors<R>
     : any;
-  sagas: any;
+  sagas: AM extends (arg0: any) => PromiseLike<infer R>
+    ? {
+        fetchSaga: FetchSaga<R, AM>;
+      }
+    : any;
 };
 
 export function createFetchSlice<P, AM extends ApiMethodExtend>(
@@ -175,5 +198,9 @@ export function createFetchSlice<P, AM extends ApiMethodExtend>(
       }
     : any;
   selectors: Selectors<P>;
-  sagas: any;
+  sagas: AM extends (arg: any) => any
+    ? {
+        fetchSaga: FetchSaga<P, AM>;
+      }
+    : any;
 };
