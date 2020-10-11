@@ -1,5 +1,7 @@
 import { takeLatest } from 'redux-saga/effects';
 
+import { ordersActions } from './slice';
+
 // import { ordersActions, ordersSagas } from './slice';
 
 // function* ordersSuccessSaga({ apiResponse }) {
@@ -9,7 +11,7 @@ import { takeLatest } from 'redux-saga/effects';
 // }
 
 export function* ordersSagas() {
-  yield takeLatest('FETCH_ORDERS', function* () {
+  yield takeLatest(ordersActions.fetchSaga.type, function* () {
     yield console.log('HELLO WORLD');
   });
   // yield takeLatest(

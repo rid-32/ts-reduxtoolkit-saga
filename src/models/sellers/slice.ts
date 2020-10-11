@@ -21,7 +21,6 @@ const {
 } = createFetchSlice<Order[], typeof fetchOrders>({
   domain: CONSTS.ORDERS_DOMAIN,
   apiMethod: fetchOrders,
-  initialState: {},
 });
 
 export const reducer = {

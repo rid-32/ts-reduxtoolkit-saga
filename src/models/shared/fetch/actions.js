@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 import { getFetchDomain } from './utils';
 
@@ -53,3 +54,23 @@ export const getFetchThunkWrapper = config => {
 
   return fetchThunkWrapper;
 };
+
+export const getFetchActions = (actions, fetchThunk) => ({
+  ...actions,
+  fetchThunk,
+  useFetchThunk: () => {
+    const dispatch = useDispatch();
+
+    return (payload, config) => dispatch(fetchThunk(payload, config));
+  },
+  useResetFetch: () => {
+    const dispatch = useDispatch();
+
+    return () => dispatch(actions.resetFetch());
+  },
+  useFetchSaga: () => {
+    const dispatch = useDispatch();
+
+    return payload => dispatch(actions.fetchSaga(payload));
+  },
+});

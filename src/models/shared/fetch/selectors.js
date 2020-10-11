@@ -1,29 +1,30 @@
 import { useSelector } from 'react-redux';
 
 import { get } from 'utils/tools';
+import { FETCH_STATUSES } from './consts';
 
 const getIsInitialSelector = domain => state => {
   const status = get(state, domain, {}).status;
 
-  return status === 'INITIAL';
+  return status === FETCH_STATUSES.INITIAL;
 };
 
 const getIsPendingSelector = domain => state => {
   const status = get(state, domain, {}).status;
 
-  return status === 'PENDING';
+  return status === FETCH_STATUSES.PENDING;
 };
 
 const getIsSuccessSelector = domain => state => {
   const status = get(state, domain, {}).status;
 
-  return status === 'SUCCESS';
+  return status === FETCH_STATUSES.SUCCESS;
 };
 
 const getIsFailureSelector = domain => state => {
   const status = get(state, domain, {}).status;
 
-  return status === 'FAILURE';
+  return status === FETCH_STATUSES.FAILURE;
 };
 
 const getPayloadSelector = domain => state => {

@@ -145,7 +145,10 @@ export function createFetchSlice<AM extends ApiMethodExtend>(
         fetchThunk: FetchThunk<R, AM>;
         useFetchThunk: () => FetchThunk<R, AM>;
         resetFetch: () => void;
-        fetchSaga: (arg0: A) => void;
+        fetchSaga: {
+          (arg0: A): void;
+          type: string;
+        };
       }
     : any;
   selectors: AM extends (...args: any) => PromiseLike<infer R>
@@ -163,7 +166,10 @@ export function createFetchSlice<P, AM extends ApiMethodExtend>(
         useFetchThunk: () => FetchThunk<P, AM>;
         resetFetch: () => void;
         useResetFetch: () => () => void;
-        fetchSaga: (arg0: A) => void;
+        fetchSaga: {
+          (arg0: A): void;
+          type: string;
+        };
         useFetchSaga: () => (arg0: A) => void;
       }
     : any;
