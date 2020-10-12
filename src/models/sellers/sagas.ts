@@ -1,7 +1,12 @@
 import { put, takeLatest } from 'redux-saga/effects';
 
 import { ordersSagas, ordersTableActions } from './slice';
-import { SuccessSaga } from 'models/shared';
+import { SuccessSaga, PreProcessSaga } from 'models/shared';
+
+const ordersPreProcess: PreProcessSaga<typeof ordersSagas.fetchSaga> = function* () {
+  yield;
+  return 'PRE_PROCESSED_DATA';
+};
 
 const ordersSuccessSaga: SuccessSaga<typeof ordersSagas.fetchSaga> = function* ({
   apiResponse,
@@ -13,6 +18,7 @@ const ordersSuccessSaga: SuccessSaga<typeof ordersSagas.fetchSaga> = function* (
 
 export default function* () {
   yield* ordersSagas.fetchSaga({
+    preProcess: ordersPreProcess,
     onSuccess: ordersSuccessSaga,
   });
   yield takeLatest('SAGA_AFTER_FETCH_SAGA', function* () {

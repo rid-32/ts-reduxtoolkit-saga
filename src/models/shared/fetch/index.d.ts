@@ -167,13 +167,15 @@ export type PreProcessThunk<Thunk extends (...args: any[]) => any> = Parameters<
 >[1]['preProcess'];
 
 type FetchSagaOptional<A, R> = {
-  (config?: {
+  (config: {
+    preProcess: (arg0: { apiArg: any }) => Iterator<any, A>;
     onSuccess?: (arg0: { apiArg: A; apiResponse: R }) => Iterator<any, R>;
   }): Generator<ReturnType<typeof takeLatest>, void>;
 };
 
 type FetchSagaRequired<A, R, P> = {
   (config: {
+    preProcess: (arg0: { apiArg: any }) => Iterator<any, A>;
     onSuccess: (arg0: { apiArg: A; apiResponse: R }) => Iterator<any, P>;
   }): Generator<ReturnType<typeof takeLatest>, void>;
 };
@@ -191,6 +193,10 @@ export type SuccessSaga<Saga extends (arg: any) => any> = Parameters<
 export type FailureSaga<Saga extends (arg: any) => any> = Parameters<
   Saga
 >[0]['onFailure'];
+
+export type PreProcessSaga<Saga extends (arg: any) => any> = Parameters<
+  Saga
+>[0]['preProcess'];
 
 type Selectors<P> = {
   isInitial: Selector<State, boolean>;
@@ -215,15 +221,16 @@ export function createFetchSlice<AM extends ApiMethodExtend>(
   reducer: AM extends (...args: any) => PromiseLike<infer R>
     ? Reducer<FetchState<R>>
     : any;
-  actions: AM extends (arg: infer A) => PromiseLike<infer R>
+  actions: AM extends (arg: any) => PromiseLike<infer R>
     ? {
         fetchThunk: FetchThunk<R, AM>;
         useFetchThunk: () => FetchThunk<R, AM>;
         resetFetch: () => void;
         fetchSaga: {
-          (arg0: A): void;
+          (arg0?: any): void;
           type: string;
         };
+        useFetchSaga: () => (arg0?: any) => void;
       }
     : any;
   selectors: AM extends (...args: any) => PromiseLike<infer R>
@@ -240,23 +247,19 @@ export function createFetchSlice<P, AM extends ApiMethodExtend>(
   config: FetchSliceConfig<P, AM>,
 ): {
   reducer: Reducer<FetchState<P>>;
-  actions: AM extends (arg: infer A) => any
-    ? {
-        fetchThunk: FetchThunk<P, AM>;
-        useFetchThunk: () => FetchThunk<P, AM>;
-        resetFetch: () => void;
-        useResetFetch: () => () => void;
-        fetchSaga: {
-          (arg0: A): void;
-          type: string;
-        };
-        useFetchSaga: () => (arg0: A) => void;
-      }
-    : any;
+  actions: {
+    fetchThunk: FetchThunk<P, AM>;
+    useFetchThunk: () => FetchThunk<P, AM>;
+    resetFetch: () => void;
+    useResetFetch: () => () => void;
+    fetchSaga: {
+      (arg0?: any): void;
+      type: string;
+    };
+    useFetchSaga: () => (arg0?: any) => void;
+  };
   selectors: Selectors<P>;
-  sagas: AM extends (arg: any) => any
-    ? {
-        fetchSaga: FetchSaga<P, AM>;
-      }
-    : any;
+  sagas: {
+    fetchSaga: FetchSaga<P, AM>;
+  };
 };

@@ -6,12 +6,13 @@ export const getFetchSagas = (apiMethod, actions) => {
       yield takeLatest(actions.fetchSaga.type, function* (action) {
         yield put(actions.fetchThunk.pending());
 
-        const apiPayload = action.payload;
+        let apiPayload = action.payload;
 
         try {
-          // const apiPayload = config.preProcessor
-          //   ? yield call(config.preProcessor, action.payload)
-          //   : action.payload;
+          if (config.preProcess) {
+            apiPayload = yield call(config.preProcess, { apiArg: apiPayload });
+          }
+
           const apiResponse = yield call(apiMethod, apiPayload);
           let result = apiResponse;
 

@@ -4,7 +4,7 @@ import { ordersActions, ordersTableActions } from './slice';
 import { SuccessThunk, PreProcessThunk } from 'models/shared';
 
 const ordersPreProcess: PreProcessThunk<typeof ordersActions.fetchThunk> = async () => {
-  return 'hell';
+  return 'PRE_PROCESSED_DATA';
 };
 
 const ordersSuccessFetch: SuccessThunk<typeof ordersActions.fetchThunk> = async ({
