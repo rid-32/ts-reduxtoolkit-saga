@@ -1,7 +1,11 @@
 import { useDispatch } from 'react-redux';
 
 import { ordersActions, ordersTableActions } from './slice';
-import { SuccessThunk } from 'models/shared';
+import { SuccessThunk, PreProcessThunk } from 'models/shared';
+
+const ordersPreProcess: PreProcessThunk<typeof ordersActions.fetchThunk> = async () => {
+  return 'hell';
+};
 
 const ordersSuccessFetch: SuccessThunk<typeof ordersActions.fetchThunk> = async ({
   apiResponse,
@@ -14,7 +18,7 @@ const ordersSuccessFetch: SuccessThunk<typeof ordersActions.fetchThunk> = async 
 
 const fetchOrders = () =>
   ordersActions.fetchThunk(null, {
-    preProcess: async () => 'hi',
+    preProcess: ordersPreProcess,
     onSuccess: ordersSuccessFetch,
   });
 

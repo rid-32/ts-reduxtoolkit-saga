@@ -5,6 +5,7 @@ export {
   FailureSaga,
   SuccessThunk,
   FailureThunk,
+  PreProcessThunk,
 } from './fetch';
 export {
   createTableControlSlice,

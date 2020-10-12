@@ -154,13 +154,17 @@ type FetchThunk<P, AM> = AM extends (arg0: infer A) => PromiseLike<P>
   ? FetchThunkRequired<B, R, P, AM>
   : any;
 
-export type SuccessThunk<Saga extends (...args: any[]) => any> = Parameters<
-  Saga
+export type SuccessThunk<Thunk extends (...args: any[]) => any> = Parameters<
+  Thunk
 >[1]['onSuccess'];
 
-export type FailureThunk<Saga extends (...args: any[]) => any> = Parameters<
-  Saga
+export type FailureThunk<Thunk extends (...args: any[]) => any> = Parameters<
+  Thunk
 >[1]['onFailure'];
+
+export type PreProcessThunk<Thunk extends (...args: any[]) => any> = Parameters<
+  Thunk
+>[1]['preProcess'];
 
 type FetchSagaOptional<A, R> = {
   (config?: {
