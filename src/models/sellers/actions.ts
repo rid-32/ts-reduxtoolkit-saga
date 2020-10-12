@@ -14,7 +14,7 @@ const ordersSuccessFetch: SuccessThunk<typeof ordersActions.fetchThunk> = async 
 
 const fetchOrders = () =>
   ordersActions.fetchThunk(null, {
-    preProcess: () => 'hi',
+    preProcess: async () => 'hi',
     onSuccess: ordersSuccessFetch,
   });
 

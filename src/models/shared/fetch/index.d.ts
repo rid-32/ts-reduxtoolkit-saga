@@ -86,7 +86,7 @@ type FetchThunkOptional<A, R, AM> = {
         ]
       : [
           config: {
-            preProcess: (arg0: { getState: () => State }) => A;
+            preProcess: (arg0: { getState: () => State }) => Promise<A>;
             onSuccess?: (arg0: {
               apiArg: A;
               apiResponse: R;
@@ -127,7 +127,7 @@ type FetchThunkRequired<A, R, P, AM> = {
           }) => Promise<void>;
         }
       : {
-          preProcess: (arg0: { getState: () => State }) => A;
+          preProcess: (arg0: { getState: () => State }) => Promise<A>;
           onSuccess: (arg0: {
             apiArg: A;
             apiResponse: R;

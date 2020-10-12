@@ -11,7 +11,7 @@ const getFetchThunk = ({ domain, apiMethod }) => {
       { dispatch, getState },
     ) => {
       try {
-        const apiPayload = preProcess ? preProcess(payload) : payload;
+        const apiPayload = preProcess ? await preProcess(payload) : payload;
 
         const apiResponse = await apiMethod(apiPayload);
 
