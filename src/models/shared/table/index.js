@@ -1,0 +1,1 @@
+export { createTableSlice } from './slice';
